@@ -1,0 +1,40 @@
+video{
+    width: 100%;
+}
+
+@media only screen and (min-width: 900px) {
+    .container{
+        display: flex;
+        height: 97vh;
+    }
+
+    .video{
+        width: 80%;
+        padding: 10px;
+        align-items: center;
+        display: flex;
+    }
+
+    .list{
+        width: 20%;
+    }
+}
+.container{
+    height: 97vh;
+}
+
+@media only screen and (max-width: 900px) {
+    .list{
+        width: 100%;
+    }
+}
+
+.btn_chapter{
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border: solid 1px #b7b7b7;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #b7b7b7;
+    font-family: cursive;
+}
