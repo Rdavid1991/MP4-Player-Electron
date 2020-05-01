@@ -4,8 +4,8 @@ let win;
 function createWindow() {
     // Create the browser window.
     win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        minWidth: 600,
+        minHeight: 700,
         webPreferences: {
             nodeIntegration: true
         }
@@ -16,8 +16,7 @@ function createWindow() {
     Menu.setApplicationMenu(mainMenu);
 
     // and load the index.html of the app.
-    win.loadFile('../index.html')
-    win.webContents.openDevTools()
+    win.loadFile(__dirname + '/index.html')
 }
 
 app.whenReady().then(createWindow)
@@ -48,5 +47,5 @@ template = [
             role: 'reload'
           }
         ]
-      }
+      } 
 ]
