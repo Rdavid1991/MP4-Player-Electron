@@ -6,7 +6,9 @@ ipcRenderer.on('hola', async (e, arg) => {
 
     let folder = arg;
 
+    let track = 0;
 
+    
 
     const fs = require('fs');
 
@@ -30,11 +32,17 @@ ipcRenderer.on('hola', async (e, arg) => {
             item = create.elements("div")
             item.innerHTML = listFiles[i]
             item.setAttribute("class", "btn_chapter")
+            item.setAttribute("track", i)
             getElement.reproducer_list.innerHTML += "<div class=\"track_section\">" + item.outerHTML + "<input class=\"view_check\" type=\"checkbox\" id=" + listFiles[i] + "></div"
         }
 
+
+    
         for (let i = 0; i < getElement.btn_chapter.length; i++) {
             getElement.btn_chapter[i].addEventListener('click', e => {
+
+                track = e.toElement.getAttribute("track");
+                
 
                 getElement.video_window.innerHTML = folder[0] + "/" + e.toElement.innerText
                 getElement.video_window.src = folder[0] + "/" + e.toElement.innerText
@@ -47,6 +55,24 @@ ipcRenderer.on('hola', async (e, arg) => {
             });
         }
 
+        getElement.video_window.onended = ()=>{
+
+            if(track < getElement.btn_chapter.length ){
+
+                track++
+
+                getElement.video_window.innerHTML = folder[0] + "/" + getElement.btn_chapter[track].innerHTML
+                getElement.video_window.src = folder[0] + "/" + getElement.btn_chapter[track].innerHTML
+
+                for (let i = 0; i < getElement.btn_chapter.length; i++) {
+                    getElement.btn_chapter[i].style.backgroundColor = "#b7b7b7"
+                }
+
+                getElement.btn_chapter[track].style.backgroundColor = "aqua"
+
+            }
+        }
+
         for (let i = 0; i < getElement.view_check.length; i++) {
 
             if (JSON.parse(localStorage.getItem("local"))) {
@@ -54,7 +80,7 @@ ipcRenderer.on('hola', async (e, arg) => {
 
                 let obj = saveViews.find(obj => obj.title === getElement.view_check[i].previousSibling.innerHTML)
 
-                getElement.view_check[i].checked = obj.view;
+                getElement.view_check[i].checked = obj ? obj.view : false;
             }
 
             getElement.view_check[i].addEventListener("click", e => {

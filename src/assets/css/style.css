@@ -37,7 +37,7 @@ body {
     font-size: 18px;
   }
 }
-.video {
+#video {
   width: 100%;
   background-color: black;
   z-index: -1;
@@ -129,6 +129,8 @@ body {
   overflow: scroll;
   overflow-x: hidden;
   height: 85vh;
+  position: fixed;
+  width: 100%;
 }
 
 .list::-webkit-scrollbar {
