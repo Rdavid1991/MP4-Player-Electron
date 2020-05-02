@@ -4,24 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <title>Document</title>
 </head>
 
 <body>
     <div class="container">
-        <div class="video">
-            <video controls autoplay src="">Hola mundo</video>
+
+        <video class="video" controls autoplay src="">Hola mundo</video>
+
+
+        <span style="font-size:30px;cursor:pointer; " onclick="openNav()">&#9776; open</span>
+
+        <div class="menu-button" onclick="myFunction(this)">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
         </div>
-        <div class="container_list">
-            <div class="title_list">List</div>
-            <div class="reproducer-list list"></div>
+
+        <div id="mySidenav" class="sidenav">
+            <div class="container_list">
+                <div class="title_list">List</div>
+                <div class="reproducer-list list"></div>
+            </div>
         </div>
+
 
     </div>
 
 </body>
 <script src="./js/htmlElements.js"></script>
 <script src="./js/index.js"></script>
+
+<script>
+    function myFunction(x) {
+        let menu = x.classList.toggle("change");
+        if(menu){
+            document.getElementById("mySidenav").style.width = "100%";
+        }else{
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    }
+</script>
 
 </html>

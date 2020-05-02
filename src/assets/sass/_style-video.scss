@@ -1,54 +1,30 @@
-body{
-    overflow: hidden;
-}
 
-video{
+.video{
     width: 100%;
+    background-color: black;
+    z-index: -1;
+    height: 100%;
 }
 
-@media only screen and (min-width: 900px) {
-    .container{
-        display: flex;
-        height: 97vh;
-    }
+/* @media only screen and (min-width: 900px) {
 
-    .video{
-        width : 80%;
-        padding: 10px;
-        align-items: center;
-        display: flex;
-    }
-
-    .container_list{
-        width: 20%;
-    }
-
-    .list{
-        overflow: scroll;
-        overflow-x: hidden;
-        height: 85vh;
-    }
+   
 }
-.container{
-    height: 97vh;
-}
+
 
 @media only screen and (max-width: 900px) {
-    .container_list{
-        width: 100%;
-    }
 
     .list{
         overflow: scroll;
         overflow-x: hidden;
         height: 17ex;
     }
-}
+} */
 
-.list{
+/* .list{
     border: 1px solid;
     padding: 10px;
-}
+} */
 
 .title_list{
     text-align: center;
