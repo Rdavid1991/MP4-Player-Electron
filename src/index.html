@@ -11,12 +11,10 @@
 <body>
     <div class="container">
 
-        <video id="video" controls autoplay src="">Hola mundo</video>
+        <video id="video" controls autoplay src=""></video>
+        <video hidden id="videoDetails" src=""></video>
 
-
-        <span style="font-size:30px;cursor:pointer; " onclick="openNav()">&#9776; open</span>
-
-        <div class="menu-button" onclick="myFunction(this)">
+        <div class="menu-button" id="menu-button" onclick="myFunction(this)">
             <div class="bar1"></div>
             <div class="bar2"></div>
             <div class="bar3"></div>
@@ -28,23 +26,10 @@
                 <div class="reproducer-list list"></div>
             </div>
         </div>
-
-
     </div>
 
 </body>
 <script src="./js/htmlElements.js"></script>
 <script src="./js/index.js"></script>
-
-<script>
-    function myFunction(x) {
-        let menu = x.classList.toggle("change");
-        if(menu){
-            document.getElementById("mySidenav").style.width = "100%";
-        }else{
-            document.getElementById("mySidenav").style.width = "0";
-        }
-    }
-</script>
 
 </html>

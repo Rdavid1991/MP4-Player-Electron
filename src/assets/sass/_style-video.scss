@@ -32,19 +32,23 @@
 }
 
 .btn_chapter{
-    margin-top: 0.5rem;
-    cursor: pointer;
-    border: solid 1px #b7b7b7;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #b7b7b7;
-    font-family: arial;
-    font-size: 12px;
-    width: 15rem;
+        cursor: pointer;
+        padding: 5px;
+
+        font-family: arial;
+        width: 100%;
+        text-align: center;
+        color: white;
 }
 
 .track_section{
     display: flex;
-    justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.541);
+    width: 100%;
+    margin-top: 12px;
+
+    &:hover{
+        background-color: gray;
+    }
 }

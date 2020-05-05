@@ -68,21 +68,23 @@ body {
 }
 
 .btn_chapter {
-  margin-top: 0.5rem;
   cursor: pointer;
-  border: solid 1px #b7b7b7;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #b7b7b7;
+  padding: 5px;
   font-family: arial;
-  font-size: 12px;
-  width: 15rem;
+  width: 100%;
+  text-align: center;
+  color: white;
 }
 
 .track_section {
   display: flex;
-  justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.541);
+  width: 100%;
+  margin-top: 12px;
+}
+.track_section:hover {
+  background-color: gray;
 }
 
 .menu-button {
@@ -98,7 +100,8 @@ body {
   background-color: white;
 }
 
-/* .menu-button:hover {
+/* 
+.menu-button:hover {
     transform: translateY(8rem);
 } */
 .bar1,
