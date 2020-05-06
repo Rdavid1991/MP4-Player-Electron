@@ -34,10 +34,8 @@
 .btn_chapter{
         cursor: pointer;
         padding: 5px;
-
         font-family: arial;
-        width: 100%;
-        text-align: center;
+        width: 60%;
         color: white;
 }
 
@@ -47,6 +45,7 @@
     background-color: rgba(0, 0, 0, 0.541);
     width: 100%;
     margin-top: 12px;
+    justify-content: center;
 
     &:hover{
         background-color: gray;

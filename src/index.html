@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -11,7 +12,9 @@
 <body>
     <div class="container">
 
-        <video id="video" controls autoplay src=""></video>
+        <video id="video" controls autoplay="true" preload="auto">
+            <source src="" type="video/mp4"/>
+        </video>
         <video hidden id="videoDetails" src=""></video>
 
         <div class="menu-button" id="menu-button" onclick="myFunction(this)">

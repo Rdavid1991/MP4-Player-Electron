@@ -6,6 +6,7 @@ function createWindow() {
 	win = new BrowserWindow({
 		minWidth: 600,
 		minHeight: 700,
+		icon:__dirname + "favicon.ico",
 		webPreferences: {
 			nodeIntegration: true
 		}
