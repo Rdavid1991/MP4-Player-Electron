@@ -1,9 +1,10 @@
 .list {
     overflow: scroll;
     overflow-x: hidden;
-    height: 85vh;
-    position: fixed;
+    height: 60vh;
     width: 100%;
+    bottom: 6rem;
+    position: fixed;
 }
 
 .list::-webkit-scrollbar {
