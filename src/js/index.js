@@ -7,6 +7,7 @@ let track,
     validFolder = 0;
 let saveViews = [];
 let historyFolders = [];
+let backHistory = [];
 
 function readFileFolder(dir) {
     let trackElement,
@@ -15,6 +16,8 @@ function readFileFolder(dir) {
     document.getElementById("list_folder").innerHTML = "";
 
     fs.readdir(dir, function (err, files) {
+
+       
         const collator = new Intl.Collator(undefined, {
             numeric: true,
             sensitivity: "base",
@@ -29,9 +32,6 @@ function readFileFolder(dir) {
                     trackElement.innerHTML = files[i];
                     trackElement.setAttribute("class", "btn_chapter");
                     trackElement.setAttribute("track", trackNumber++);
-                    document
-                        .getElementById("list_folder")
-                        .classList.replace("folder-list", "list");
                     document.getElementById(
                         "list_folder"
                     ).innerHTML += `<div class="track_section">${trackElement.outerHTML}<input class="view_check" type="checkbox"></div`;
@@ -49,6 +49,10 @@ function readFileFolder(dir) {
                 }
             }
 
+            document
+                .getElementById("list_folder")
+                .classList.replace("folder-list", "list");
+
             if (localStorage.length > 0) {
                 for (let i = 0; i < getElement.view_check.length; i++) {
                     let obj = saveViews.find(
@@ -60,6 +64,9 @@ function readFileFolder(dir) {
                 }
             }
         } else {
+            document
+                .getElementById("list_folder")
+                .classList.replace("list", "folder-list");
             loadHistoryFolder(dir, files);
         }
 
@@ -73,7 +80,7 @@ function readFileFolder(dir) {
     });
 }
 
-function selectTrack(dir,videoTrack) {
+function selectTrack(dir, videoTrack) {
     getElement.video_window.src = path.join(dir, videoTrack.innerText);
     cleanSelectChapter();
     videoTrack.parentNode.style.backgroundColor = "#607D8B";
@@ -133,10 +140,10 @@ function saveHistoryFolder() {
 ipcRenderer.on("dir", (err, dir) => {
     track = 0;
     folder = dir;
+    backHistory = [dir]
 
     readFileFolder(dir);
 });
-
 
 getElement.video_window.onended = () => {
     getElement.btn_chapter[track].nextSibling.checked = true;
@@ -162,20 +169,33 @@ getElement.video_window.onended = () => {
     }
 };
 
-
 let route;
 document.getElementById("list_folder").addEventListener("click", (e) => {
-
     if (e.target.parentNode.className === "folders_items") {
-        route = e.target.parentNode.getAttribute("route")
-        console.log(route);
+        route = e.target.parentNode.getAttribute("route");
+        backHistory.push(route);
+        console.log(backHistory);
         
         readFileFolder(route);
     } else if (e.target.className === "btn_chapter") {
-        track = selectTrack(route , e.target);
+        track = selectTrack(route, e.target);
     } else if (e.target.className === "view_check") {
         saveViews = changeViewStatus(e.target, saveViews);
         localStorage.setItem("local", JSON.stringify(saveViews));
+    }
+});
+
+document.getElementById("back_button").addEventListener("click", (e) => {
+
+    if (backHistory.length > 1) {
+        
+        let route = backHistory.pop();
+        route = route.substring(0,route.lastIndexOf("\\"))
+
+        console.log(route);
+        console.log(backHistory.length);
+        
+        readFileFolder(route);
     }
 });
 
