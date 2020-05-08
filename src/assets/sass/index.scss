@@ -3,12 +3,17 @@
 body{
     margin: 0;
     overflow: hidden;
+    user-select: none;
 }
 
 .container{
     height: 100vh;
 }
 
-.back::before{
-    content: "<";
+.back{
+    width: 4rem;
+    position: absolute;
+    filter: contrast(1) invert(1);
+    margin-left: 2rem;
+    cursor: pointer
 }

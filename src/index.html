@@ -26,30 +26,12 @@
             </div>
 
             <div id="mySidenav" class="sidenav">
-                <div id="back_button" class="back"></div>
+                <div id="back_button" class="back">
+                    <img src="./assets/img/back.svg" alt="" srcset="">
+                </div>
                 <div class="menu-tab">
-                    <div class="tab">
-                        <button
-                            class="tablinks"
-                            onclick="openCity(event, 'list')"
-                        >
-                            Track
-                        </button>
-                        <button
-                            class="tablinks"
-                            onclick="openCity(event, 'folder')"
-                        >
-                            Folder
-                        </button>
-                    </div>
-                    <div id="list" class="container_list tabcontent">
-                        <div id="title_list" class="title_list">List</div>
-                        <div class="reproducer-list list"></div>
-                    </div>
                     <div id="folder" class="tabcontent">
-                        <div id="list_folder" class="folder-list">
-
-                        </div>
+                        <div id="list_folder" class="folder-list"></div>
                     </div>
                 </div>
             </div>
@@ -57,22 +39,4 @@
     </body>
     <script src="./js/htmlElements.js"></script>
     <script src="./js/index.js"></script>
-    <script>
-        function openCity(evt, cityName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(
-                    " active",
-                    ""
-                );
-            }
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-    </script>
 </html>

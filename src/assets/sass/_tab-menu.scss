@@ -1,40 +1,16 @@
-/* Style the tab */
-.tab {
-    display: flex;
-    justify-content: center;
-}
-
-/* Style the buttons inside the tab */
-.tab button {
-    background-color: inherit;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 22px;
-    font-weight: bold;
-}
-/* Change background color of buttons on hover */
-.tab button:hover {
-    background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-    background-color: #ccc;
-}
 
 /* Style the tab content */
 .tabcontent {
-    display: none;
     padding: 6px 12px;
     border-top: none;
+    position: absolute;
+    top: 7rem;
+    width: 92%
 }
 
 .menu-tab{
-    display: grid;
-    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
 }
 
 .folders_items img {
@@ -42,19 +18,23 @@
 }
 
 .folders_items {
-    margin: 3rem 3rem 3rem 3rem;
+    margin-left: 1rem;
     cursor: pointer;
+    font-size: 14px;
+    font-family: arial;
+    text-align: center;
+    width: 11rem;
 }
 
 .folder-list{
-    display: grid;
-    grid-template-columns: 12rem 12rem 12rem;
+    display: flex;
     height: 73vh;
-    contain: content;
     overflow-y: auto;
-    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;;
 
     p{
         color: white;
+        margin: 0;
     }
 }

@@ -1,6 +1,7 @@
 const { ipcRenderer } = require("electron");
 const fs = require("fs");
 const path = require("path");
+const { exit } = require("process");
 
 let track,
     folder,
@@ -16,8 +17,6 @@ function readFileFolder(dir) {
     document.getElementById("list_folder").innerHTML = "";
 
     fs.readdir(dir, function (err, files) {
-
-       
         const collator = new Intl.Collator(undefined, {
             numeric: true,
             sensitivity: "base",
@@ -70,12 +69,6 @@ function readFileFolder(dir) {
             loadHistoryFolder(dir, files);
         }
 
-        document.getElementById("title_list").innerHTML = dir.substring(
-            dir.lastIndexOf("\\") + 1
-        );
-        if (!historyFolders.find((obj) => obj.name === folder)) {
-            historyFolders.push({ name: folder });
-        }
         localStorage.setItem("local", JSON.stringify(saveViews));
     });
 }
@@ -131,22 +124,32 @@ function loadHistoryFolder(dir, array) {
 }
 
 function saveHistoryFolder() {
-    if (validFolder > 0) {
-        localStorage.setItem("folders", JSON.stringify(historyFolders));
-        loadHistoryFolder();
-    }
+    localStorage.setItem("folders", JSON.stringify(historyFolders));
+}
+
+function principalFolder(folder) {
+    let div = create.elements("div");
+    div.innerHTML = `<img src="${__dirname}/interface.png"></img><p>${folder.substring(
+        folder.lastIndexOf("\\") + 1
+    )}</>`;
+    div.setAttribute("class", "folders_items");
+    div.setAttribute("route", folder);
+    document.getElementById("list_folder").appendChild(div);
 }
 
 ipcRenderer.on("dir", (err, dir) => {
     track = 0;
     folder = dir;
-    backHistory = [dir]
-
-    readFileFolder(dir);
+    if (!historyFolders.find((obj) => obj.name === dir)) {
+        historyFolders.push({ name: dir });
+        saveHistoryFolder();
+        principalFolder(dir);
+    }
 });
 
 getElement.video_window.onended = () => {
     getElement.btn_chapter[track].nextSibling.checked = true;
+
     let obj = saveViews.find(
         (obj) => obj.title === getElement.btn_chapter[track].innerHTML
     );
@@ -158,6 +161,12 @@ getElement.video_window.onended = () => {
     if (track < parseInt(getElement.btn_chapter.length) - 1) {
         setTimeout(() => {
             track++;
+            console.log(
+                folder,
+                "folder vs track",
+                getElement.btn_chapter[track].innerHTML
+            );
+
             getElement.video_window.src = path.join(
                 folder,
                 getElement.btn_chapter[track].innerHTML
@@ -171,14 +180,14 @@ getElement.video_window.onended = () => {
 
 let route;
 document.getElementById("list_folder").addEventListener("click", (e) => {
+    console.log(backHistory);
+
     if (e.target.parentNode.className === "folders_items") {
-        route = e.target.parentNode.getAttribute("route");
-        backHistory.push(route);
-        console.log(backHistory);
-        
-        readFileFolder(route);
+        folder = e.target.parentNode.getAttribute("route");
+        backHistory.push(folder);
+        readFileFolder(folder);
     } else if (e.target.className === "btn_chapter") {
-        track = selectTrack(route, e.target);
+        track = selectTrack(folder, e.target);
     } else if (e.target.className === "view_check") {
         saveViews = changeViewStatus(e.target, saveViews);
         localStorage.setItem("local", JSON.stringify(saveViews));
@@ -186,16 +195,19 @@ document.getElementById("list_folder").addEventListener("click", (e) => {
 });
 
 document.getElementById("back_button").addEventListener("click", (e) => {
-
+    
     if (backHistory.length > 1) {
-        
         let route = backHistory.pop();
-        route = route.substring(0,route.lastIndexOf("\\"))
-
-        console.log(route);
-        console.log(backHistory.length);
-        
+        route = route.substring(0, route.lastIndexOf("\\"));
         readFileFolder(route);
+    } else {
+        document.getElementById("list_folder").classList.replace("list", "folder-list");
+        document.getElementById("list_folder").innerHTML = "";
+        historyFolders = JSON.parse(localStorage.getItem("folders"));
+        historyFolders.forEach((e) => {
+            principalFolder(e.name);
+        });
+        backHistory = [];
     }
 });
 
@@ -205,4 +217,7 @@ if (localStorage.getItem("local")) {
 
 if (localStorage.getItem("folders")) {
     historyFolders = JSON.parse(localStorage.getItem("folders"));
+    historyFolders.forEach((e) => {
+        principalFolder(e.name);
+    });
 }
