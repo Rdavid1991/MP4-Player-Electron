@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="assets/css/style.css" />
-        <title>Document</title>
-    </head>
 
-    <body>
-        <div class="container">
-            <video id="video" controls autoplay="true" preload="auto">
-                <source src="" type="video/mp4" />
-            </video>
-            <video hidden id="videoDetails" src=""></video>
+<head>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Document</title>
+</head>
 
-            <div
-                class="menu-button"
-                id="menu-button"
-                onclick="myFunction(this)"
-            >
-                <div class="bar1"></div>
-                <div class="bar2"></div>
-                <div class="bar3"></div>
+<body>
+    <div class="container">
+        <video id="video" controls autoplay="true" preload="auto">
+            <source src="" type="video/mp4" />
+            <track src="" kind="subtitles">
+        </video>
+        <video hidden id="videoDetails" src=""></video>
+
+        <div class="menu-button" id="menu-button">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <div id="mySidenav" class="sidenav">
+            <div id="back-button" class="back">
+                <img src="./assets/img/back.svg" alt="" srcset="" />
             </div>
-
-            <div id="mySidenav" class="sidenav">
-                <div id="back_button" class="back">
-                    <img src="./assets/img/back.svg" alt="" srcset="">
-                </div>
-                <div class="menu-tab">
-                    <div id="folder" class="tabcontent">
-                        <div id="list_folder" class="folder-list"></div>
-                    </div>
+            <div class="menu-tab">
+                <div id="folder" class="tabcontent">
+                    <div id="list-folder" class="folder-list"></div>
                 </div>
             </div>
         </div>
-    </body>
-    <script src="./js/htmlElements.js"></script>
-    <script src="./js/index.js"></script>
+    </div>
+</body>
+<script>
+    require("./app/index.js");
+</script>
+
 </html>

@@ -1,0 +1,82 @@
+WEBVTT
+
+1
+00:00:04.320 --> 00:00:10.590
+Before we get started let's cover in brief what you'll be seeing throughout this course or more specifically
+
+2
+00:00:10.590 --> 00:00:15.480
+how I'll be writing and running the electron projects in the course lessons.
+
+3
+00:00:15.480 --> 00:00:22.080
+First up the project code I'll be using for this I've created a very simple boilerplate project based
+
+4
+00:00:22.110 --> 00:00:25.470
+on electron ISIS own quick start project.
+
+5
+00:00:25.470 --> 00:00:31.200
+The main difference being a reduction in code comments to better follow along on video and a few code
+
+6
+00:00:31.230 --> 00:00:37.980
+changes in preparation for upcoming changes in the electron API will cover getting this project code
+
+7
+00:00:37.980 --> 00:00:41.210
+set up in the next section of the course however.
+
+8
+00:00:41.310 --> 00:00:47.610
+Then to edit project code I'll be using the atom editor an editor that happens to be both using electron
+
+9
+00:00:48.030 --> 00:00:54.960
+any editor will do and no extensions or configuration is required although ensuring basic javascript
+
+10
+00:00:54.990 --> 00:00:58.230
+and HDMI syntax highlighting will be useful.
+
+11
+00:00:58.230 --> 00:01:03.650
+I've linked to the ATM download page in the lesson resources to run the project code.
+
+12
+00:01:03.690 --> 00:01:05.670
+Any command line tool will do.
+
+13
+00:01:05.730 --> 00:01:12.120
+I'll be using the hyper terminal again both using electron but the native Mac terminal or windows command
+
+14
+00:01:12.120 --> 00:01:14.230
+prompt is perfectly suitable.
+
+15
+00:01:14.310 --> 00:01:20.490
+The only prerequisite here being to have the latest version of No dodgy OS installed you can find the
+
+16
+00:01:20.490 --> 00:01:24.930
+link to the no DOJ is download page in the lesson resources.
+
+17
+00:01:24.930 --> 00:01:30.600
+I'd also encourage you to check each lessons linked resources throughout the course as you'll find any
+
+18
+00:01:30.600 --> 00:01:33.570
+valuable references to that lesson there.
+
+19
+00:01:33.570 --> 00:01:39.840
+So with that said and knowing what to expect in the next section of the course we'll get started installing
+
+20
+00:01:39.840 --> 00:01:45.480
+electron getting our project code set up and running that boilerplate project for the first time.
+

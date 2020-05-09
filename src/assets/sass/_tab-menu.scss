@@ -1,20 +1,15 @@
-
 /* Style the tab content */
 .tabcontent {
     padding: 6px 12px;
     border-top: none;
     position: absolute;
     top: 7rem;
-    width: 92%
+    width: 92%;
 }
 
-.menu-tab{
+.menu-tab {
     display: flex;
     justify-content: center;
-}
-
-.folders_items img {
-    width: 7rem
 }
 
 .folders_items {
@@ -26,15 +21,33 @@
     width: 11rem;
 }
 
-.folder-list{
+.img-folder {
+    height: 7rem;
+    background: url(../img/interface.png);
+    background-repeat: no-repeat;
+    background-size: 100px 100px;
+    background-position: center
+}
+
+.folder-list {
     display: flex;
     height: 73vh;
     overflow-y: auto;
     flex-wrap: wrap;
-    flex-direction: row;;
+    flex-direction: row;
 
-    p{
+    p {
         color: white;
         margin: 0;
+    }
+    &::-webkit-scrollbar {
+        width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: radial-gradient(#673ab738, #607d8b);
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+        border-radius: 10px;
     }
 }

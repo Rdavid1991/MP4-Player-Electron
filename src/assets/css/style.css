@@ -26,6 +26,12 @@
   z-index: -1;
   height: 100%;
 }
+#video::cue {
+  color: antiquewhite;
+  font-family: sans-serif;
+  background-color: black;
+  font-size: 20px;
+}
 
 .title_list {
   text-align: center;
@@ -140,10 +146,6 @@
   justify-content: center;
 }
 
-.folders_items img {
-  width: 7rem;
-}
-
 .folders_items {
   margin-left: 1rem;
   cursor: pointer;
@@ -151,6 +153,14 @@
   font-family: arial;
   text-align: center;
   width: 11rem;
+}
+
+.img-folder {
+  height: 7rem;
+  background: url(../img/interface.png);
+  background-repeat: no-repeat;
+  background-size: 100px 100px;
+  background-position: center;
 }
 
 .folder-list {
@@ -163,6 +173,16 @@
 .folder-list p {
   color: white;
   margin: 0;
+}
+.folder-list::-webkit-scrollbar {
+  width: 7px;
+}
+.folder-list::-webkit-scrollbar-thumb {
+  background: radial-gradient(#673ab738, #607d8b);
+  border-radius: 10px;
+}
+.folder-list::-webkit-scrollbar-track {
+  border-radius: 10px;
 }
 
 body {
