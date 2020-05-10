@@ -1,290 +1,146 @@
 WEBVTT
 
 1
-00:00:04.280 --> 00:00:09.980
-In this new section of the course we won't be focusing on specific electron modules but important or
+00:00:04.230 --> 00:00:10.410
+Knowing when your app has network connectivity can be very helpful and avoid complicated or unnecessary
 
 2
-00:00:09.980 --> 00:00:13.110
-useful implementations of these modules.
+00:00:10.410 --> 00:00:15.930
+error handling when trying to perform network requests under or flown conditions.
 
 3
-00:00:13.250 --> 00:00:19.000
-On top of that we'll also see how to implement native HDMI L5 API within our app.
+00:00:15.930 --> 00:00:22.610
+So in the short list and we'll see how to use the HDMI L5 navigator API to check network status.
 
 4
-00:00:19.010 --> 00:00:24.620
-Remember when building electron apps we're working in one of the latest versions of chromium meaning
+00:00:22.800 --> 00:00:27.540
+The primary API here being the navigator online property.
 
 5
-00:00:24.650 --> 00:00:30.140
-pretty much all of the HDMI L5 API is is supported inside of a browser window.
+00:00:27.540 --> 00:00:31.550
+But we also have some access to events which I'll demonstrate in a minute.
 
 6
-00:00:30.140 --> 00:00:35.620
-Something we should definitely take full advantage of the first topic we'll cover then not being an
+00:00:31.590 --> 00:00:34.660
+Navigator of course being a global window object.
 
 7
-00:00:35.620 --> 00:00:43.390
-HDMI five API but an electron one is off screen rendering electron has a dedicated page explaining this
+00:00:34.680 --> 00:00:42.760
+As with any other HDMI 5 API so this is exclusive to the renderer process indexed on HDMI all.
 
 8
-00:00:43.390 --> 00:00:50.050
-concept but essentially it means to load and render content into a browser window on a separate thread
+00:00:42.810 --> 00:00:51.990
+I'll start by creating a simple network Status Indicator using this h1 tag say app is with an underscore
 
 9
-00:00:50.530 --> 00:00:55.880
-meaning it's not visible and therefore happens faster whilst using less resources.
+00:00:51.990 --> 00:01:00.750
+tag that we can select to set the status using an idea of status then working in line we can check the
 
 10
-00:00:55.930 --> 00:01:03.580
-A perfect solution for say rendering a page onto a canvas element or even a 3D context of screen rendering
+00:01:00.750 --> 00:01:03.780
+initial network status when loading the app.
 
 11
-00:01:03.580 --> 00:01:10.480
-can be run in two modes by default using the GOP view or the graphics card or alternatively using the
+00:01:03.780 --> 00:01:11.970
+Start by selecting the status element assigning the Domino to status node document dot get element by
 
 12
-00:01:10.480 --> 00:01:18.130
-system CPSU only if you require a 3D CSI s animations during rendering you'll want to leave it as the
+00:01:12.000 --> 00:01:22.280
+a D status then we can set this elements text based on the navigators on line property status node dot
 
 13
-00:01:18.130 --> 00:01:18.710
-default.
+00:01:22.400 --> 00:01:32.330
+inner text equals using a ternary operator navigate a dot on line which if true will set the status
 
 14
-00:01:18.790 --> 00:01:25.390
-So using the GP you but should your app not require the rendering of animations disabling the use of
+00:01:32.330 --> 00:01:34.130
+text to online.
 
 15
-00:01:25.390 --> 00:01:30.800
-the GP due in favour of the CPSU only is the preferred faster option.
+00:01:34.130 --> 00:01:37.740
+Else meaning navigator dot online return false.
 
 16
-00:01:30.820 --> 00:01:37.570
-I'll demonstrate the latter to start will tell our app to disable hardware acceleration so only using
+00:01:37.790 --> 00:01:45.280
+We'll set it to offline save this reload main window and their app is on line.
 
 17
-00:01:37.570 --> 00:01:39.580
-the CPSU in mind.
+00:01:45.560 --> 00:01:51.050
+Now to test network conditions we can normally use the network conditions tab in dev tools.
 
 18
-00:01:39.600 --> 00:01:48.280
-J.S. before creating any browser windows call on the app instance disable hardware acceleration then
+00:01:51.050 --> 00:01:57.140
+This one here setting throttling to offline but this doesn't work for the navigators.
 
 19
-00:01:48.280 --> 00:01:50.600
-to render this main window off screen.
+00:01:57.140 --> 00:01:58.610
+Online property.
 
 20
-00:01:50.740 --> 00:01:56.090
-We can set on it to wear preferences off screen true.
+00:01:58.610 --> 00:02:06.950
+Instead I'll turn off my Wi-Fi to actually go offline refresh the window again app is off line back
 
 21
-00:01:56.110 --> 00:02:00.760
-Very importantly note that we are setting the web content of this browser window to be rendered off
+00:02:07.070 --> 00:02:10.820
+on refresh again and we're back.
 
 22
-00:02:00.760 --> 00:02:01.740
-screen.
+00:02:10.820 --> 00:02:17.300
+So this is a simple solution for checking network status explicitly but we can also implement event
 
 23
-00:02:01.840 --> 00:02:07.120
-The window itself belongs to the main process and cannot be run on a separate thread like the rendering
+00:02:17.300 --> 00:02:24.860
+listeners to notify us of network changes or create a function to set the status text worth concert
 
 24
-00:02:07.180 --> 00:02:08.740
-of the web contents.
+00:02:25.280 --> 00:02:25.750
+set.
 
 25
-00:02:08.740 --> 00:02:15.100
-This will make more sense in a second then instead of loading indexed not HD Mel I'll change this window
+00:02:25.760 --> 00:02:31.730
+Status equals a function with a single argument of status.
 
 26
-00:02:15.100 --> 00:02:21.670
-to instead load a U.R.L. H2 DP s electron J.S. dot org.
+00:02:31.820 --> 00:02:39.410
+There's just being a true or false value move that node selector into the function reusing the same
 
 27
-00:02:21.700 --> 00:02:23.000
-That's basically it.
+00:02:39.410 --> 00:02:44.430
+ternary operator checking instead of navigated out online.
 
 28
-00:02:23.110 --> 00:02:26.440
-This main window will now load and render it Web contents.
+00:02:44.510 --> 00:02:52.910
+The status argument passed to the function perform as before the check on load calling set status with
 
 29
-00:02:26.440 --> 00:02:31.070
-The electron J.S. home page but we won't be able to see it.
+00:02:52.910 --> 00:02:56.620
+the status value being navigator dot on line.
 
 30
-00:02:31.150 --> 00:02:37.690
-So to make sure it's working we can get the window title once it's done loading lesson on Main windows
+00:02:56.960 --> 00:03:03.410
+Then to have any subsequent changes to the network status reported we can listen on the window object
 
 31
-00:02:37.690 --> 00:02:42.270
-web contents for dead Finnish load.
+00:03:03.800 --> 00:03:11.250
+so window dot add event listener on line meaning the app went back online.
 
 32
-00:02:42.450 --> 00:02:48.570
-Passing a callback in which I log out the window title with main window.
+00:03:11.460 --> 00:03:13.440
+Call set status.
 
 33
-00:02:48.580 --> 00:02:52.110
-Dot get title save this.
+00:03:13.440 --> 00:03:26.370
+True duplicate this listener for the offline event calling set status false safe reload the window which
 
 34
-00:02:52.150 --> 00:02:58.130
-The app relaunches and we get this framed glass window with its web content being rendered off screen.
+00:03:26.370 --> 00:03:32.310
+does the initial check and confirms that we're on line and now with the event we can actually use the
 
 35
-00:02:58.270 --> 00:03:04.270
-As per this message check for the title in the terminal where we see the title of the electron home
+00:03:32.310 --> 00:03:40.080
+dev tools to emulate network conditions set throttling to offline the header updates accordingly and
 
 36
-00:03:04.270 --> 00:03:05.740
-page locked out.
-
-37
-00:03:05.740 --> 00:03:07.990
-We can ignore this electron warning here.
-
-38
-00:03:08.230 --> 00:03:10.690
-So everything worked as expected.
-
-39
-00:03:10.780 --> 00:03:15.990
-Now in most cases we're not going to want this window with offscreen content to be visible either.
-
-40
-00:03:16.090 --> 00:03:20.140
-So let's also hide the window itself setting on the browser window.
-
-41
-00:03:20.140 --> 00:03:26.130
-Options show two false then not being able to see the browser window itself.
-
-42
-00:03:26.170 --> 00:03:31.100
-We might as well also close it once it's done loading and we've got everything we need.
-
-43
-00:03:31.270 --> 00:03:39.340
-Comment out this close listener calling after the dead finish loading and fires main window close and
-
-44
-00:03:39.340 --> 00:03:41.370
-setting main window to No.
-
-45
-00:03:41.410 --> 00:03:46.750
-Ideally we would have probably just quit the entire empire but with node man running that doesn't make
-
-46
-00:03:46.750 --> 00:03:47.720
-any sense.
-
-47
-00:03:47.800 --> 00:03:50.140
-Save this to check it still works.
-
-48
-00:03:50.140 --> 00:03:56.170
-Nothing happens now as there's no window to focus too but in the terminal we still get that title locked
-
-49
-00:03:56.170 --> 00:03:57.380
-out.
-
-50
-00:03:57.380 --> 00:04:03.070
-Okay so rendering some content is great but 99 percent of the time off screen rendering will be used
-
-51
-00:04:03.070 --> 00:04:05.900
-to get rendered versions of the content.
-
-52
-00:04:06.100 --> 00:04:12.080
-To do this we can listen for the paint event on the offscreen web content's main window.
-
-53
-00:04:12.100 --> 00:04:22.030
-Dot web content on paint the event callback providing us with the event object dirty which is the size
-
-54
-00:04:22.060 --> 00:04:24.940
-and bounds of the area that was rendered.
-
-55
-00:04:24.940 --> 00:04:32.380
-And lastly a native image instance of the rendered content paint unlike did finish load fires each and
-
-56
-00:04:32.440 --> 00:04:35.300
-every time the content rendering changes.
-
-57
-00:04:35.350 --> 00:04:38.740
-This happens multiple times when loading the content for example.
-
-58
-00:04:38.740 --> 00:04:44.890
-So to capture the content loading stages in images I'll save a screenshot each time the paint event
-
-59
-00:04:44.890 --> 00:04:45.870
-fires.
-
-60
-00:04:46.060 --> 00:04:49.310
-Assigning to screenshot image.
-
-61
-00:04:49.450 --> 00:04:54.390
-This native image instance of the rendered content dot to PNG G.
-
-62
-00:04:54.850 --> 00:05:03.480
-And write that image to my desktop using notes FSS module FSS dot right file get the desktop path with
-
-63
-00:05:03.620 --> 00:05:12.350
-app dot get path desktop slash screenshot underscore I.
-
-64
-00:05:12.450 --> 00:05:16.060
-Which will create in a second dot pen.
-
-65
-00:05:16.470 --> 00:05:23.430
-The data we are writing to this file being our screenshot BMG image and to handle any errors past console
-
-66
-00:05:23.430 --> 00:05:32.730
-load log as the callback create AI a simple no increment for each screenshot starting at 1 and increment
-
-67
-00:05:32.790 --> 00:05:34.640
-after each paint.
-
-68
-00:05:34.680 --> 00:05:45.540
-We also need to require the SS module concept F S equals require F S save this and quickly move over
-
-69
-00:05:45.540 --> 00:05:53.430
-to the desktop where we get those screenshots as the Web content is rendered seeing each and every paint
-
-70
-00:05:53.440 --> 00:05:55.320
-from start to finish.
-
-71
-00:05:55.510 --> 00:05:59.890
-A simple but very powerful technique for performing fast content rendering.
-
-72
-00:05:59.890 --> 00:06:01.240
-As a background process.
+00:03:40.080 --> 00:03:42.000
+the same when going back online.
 

@@ -2,17 +2,14 @@ const fs = require("fs")
 const path = require("path")
 
 
-function convert(dir, file) {
-
-
+function convert(dir) {
     fs.mkdirSync(path.join(__dirname, "../subtitle"), { recursive: true })
-
-    if (fs.existsSync(path.join(dir, file + ".srt"))) {
-        let subtitle = srt2webvtt(fs.readFileSync(path.join(dir, file + ".srt"), 'utf8'))
+    if (fs.existsSync(dir + ".srt")) {
+        let subtitle = srt2webvtt(fs.readFileSync(dir + ".srt", 'utf8'))
         fs.writeFileSync(path.join(__dirname, "../subtitle/subtitle.vtt"), subtitle, 'utf8')
         return path.join(__dirname, "../subtitle/subtitle.vtt")
-    }else if(fs.existsSync(path.join(dir, file + ".vtt"))){
-        return path.join(dir, file + ".vtt")
+    } else if (fs.existsSync(dir + ".vtt")) {
+        return path.join(dir + ".vtt")
     }
 }
 

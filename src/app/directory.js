@@ -1,4 +1,4 @@
-const path =require("path")
+const path = require("path")
 const { create, stringElement, getElement } = require("./htmlElements");
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
         }
     },
 
-    saveHistoryFolder: () => {
+    saveHistoryFolder: (historyFolders) => {
         localStorage.setItem("folders", JSON.stringify(historyFolders));
     },
 
@@ -23,5 +23,5 @@ module.exports = {
         div.setAttribute("class", "folders_items");
         div.setAttribute("route", folder);
         getElement.listFolder.appendChild(div);
-    }
+    },
 }
