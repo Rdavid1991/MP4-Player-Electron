@@ -128,9 +128,9 @@ getElement.backButton.addEventListener("click", (e) => {
 getElement.menuButton.addEventListener('click', (e) => {
     let menu = getElement.menuButton.classList.toggle('change');
     if (menu) {
-        getElement.side_nav.style.width = "100%";
+        getElement.side_nav.style.display = "block";
     } else {
-        getElement.side_nav.style.width = "0";
+        getElement.side_nav.style.display = "none";
     }
 });
 
