@@ -5,9 +5,8 @@
   z-index: 1;
   top: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.465);
+  background-color: rgba(0, 0, 0, 0.92);
   overflow-x: hidden;
-  transition: 0.5s;
   padding-top: 30px;
 }
 
@@ -54,9 +53,11 @@
   display: flex;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.541);
-  width: 100%;
   margin-top: 12px;
   justify-content: center;
+  border-radius: 50px;
+  border-style: outset;
+  border-color: rgba(255, 127, 80, 0.7);
 }
 .track_section:hover {
   background-color: gray;
@@ -66,19 +67,14 @@
   display: inline-block;
   cursor: pointer;
   position: fixed;
-  right: 10px;
-  top: 0;
+  right: 2rem;
+  top: 2rem;
   z-index: 2;
-  /*   transition: 1s; */
 }
 .menu-button div {
   background-color: white;
 }
 
-/* 
-.menu-button:hover {
-    transform: translateY(8rem);
-} */
 .bar1,
 .bar2,
 .bar3 {
@@ -109,7 +105,6 @@
   height: 60vh;
   width: 100%;
   bottom: 6rem;
-  position: fixed;
 }
 
 .list::-webkit-scrollbar {
@@ -162,6 +157,9 @@
   background-size: 100px 100px;
   background-position: center;
 }
+.img-folder:active {
+  background-size: 110px 110px;
+}
 
 .folder-list {
   display: flex;
@@ -196,11 +194,21 @@ body {
 }
 
 .back {
+  background: url(../img/back.svg);
+  background-repeat: no-repeat;
+  height: 5rem;
   width: 4rem;
   position: absolute;
-  filter: contrast(1) invert(1);
+  filter: contrast(0.8) invert(0.8);
   margin-left: 2rem;
   cursor: pointer;
+  transition: 0.5s;
+}
+.back:hover {
+  filter: contrast(1) invert(1);
+}
+.back:active {
+  background-size: 4.5rem;
 }
 
 /*# sourceMappingURL=style.css.map */

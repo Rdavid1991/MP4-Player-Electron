@@ -3,15 +3,11 @@ const { getElement } = require("./htmlElements");
 const convert = require("./subtitle")
 
 module.exports = track = {
-    selectTrack: (dirArray, currentTrack) => {
-
-        let track = dirArray.find(obj => obj.name === currentTrack.innerText)
-
+    selectTrack: (dirArray, selectTrack) => {
+        let track = dirArray.find(obj => obj.name === selectTrack.innerText)
         getElement.video_window.setAttribute("nameFile", track.name)
         getElement.video_window.src = track.route
         getElement.subTrack.src = convert(track.route.substring(0, track.route.lastIndexOf(".")))
-
-        return currentTrack.getAttribute("track");
     },
 
     changeViewStatus: (checkView, saveArray) => {
@@ -25,16 +21,7 @@ module.exports = track = {
         }
         return saveArray;
     },
-
-    cleanSelectChapter: (currentTrack) => {
-
-        currentTrack.style.backgroundColor = "rgba(0, 0, 0, 0.541)";
-        currentTrack.onmouseover = function () {
-            this.style.backgroundColor = "background-color: gray";
-        };
-
-        currentTrack.style.backgroundColor = "#607D8B";
-    },
+    
     trackViewStyle: (trackArray) => {
         let trackSection = Array.from(getElement.trackSection)
 
@@ -44,8 +31,6 @@ module.exports = track = {
                 trackSection[i].lastElementChild.checked = trackArray[i].view
             }
             trackSection.forEach((element) => {
-
-                console.log(element.innerText);
                 element.style.backgroundColor = "rgba(0, 0, 0, 0.541)"
                 if (element.innerText === getElement.video_window.getAttribute("nameFile")) {
                     element.style.backgroundColor = "#607D8B";

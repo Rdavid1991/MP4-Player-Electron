@@ -18,7 +18,6 @@ function createWindow() {
 
 	// and load the index.html of the app.
 	win.loadFile(__dirname + '/index.html')
-
 }
 
 app.whenReady().then(createWindow)

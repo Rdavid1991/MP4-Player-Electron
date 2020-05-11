@@ -1,19 +1,29 @@
-@import 'style-sidenav' , 'style-video','open-close-button', 'style-player-list','tab-menu';
+@import "style-sidenav", "style-video", "open-close-button", "style-player-list", "tab-menu";
 
-body{
+body {
     margin: 0;
     overflow: hidden;
     user-select: none;
 }
 
-.container{
+.container {
     height: 100vh;
 }
 
-.back{
+.back {
+    background: url(../img/back.svg);
+    background-repeat: no-repeat;
+    height: 5rem;
     width: 4rem;
     position: absolute;
-    filter: contrast(1) invert(1);
+    filter: contrast(0.8) invert(0.8);
     margin-left: 2rem;
-    cursor: pointer
+    cursor: pointer;
+    transition: 0.5s;
+    &:hover{
+        filter: contrast(1) invert(1);
+    }
+    &:active{
+        background-size: 4.5rem;
+    }  
 }

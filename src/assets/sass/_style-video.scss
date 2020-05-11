@@ -33,9 +33,11 @@
     display: flex;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.541);
-    width: 100%;
     margin-top: 12px;
     justify-content: center;
+    border-radius: 50px;
+    border-style: outset;
+    border-color: rgb(255, 127, 80,0.7);
 
     &:hover {
         background-color: gray;

@@ -1,12 +1,12 @@
 const { ipcRenderer } = require("electron");
+const { remote } = require('electron')
 const { create, getElement, stringElement } = require("./htmlElements");
 const { principalFolder, saveHistoryFolder, loadHistoryFolder } = require("./directory");
-const { cleanSelectChapter, selectTrack, changeViewStatus,trackViewStyle } = require("./track");
+const { cleanSelectChapter, selectTrack, changeViewStatus, trackViewStyle } = require("./track");
 const convert = require("./subtitle")
 const fs = require("fs");
 const path = require("path");
 
-let track = 0, folder;
 let saveViews = [];
 let historyFolders = [];
 let backHistory = [];
@@ -15,68 +15,69 @@ let tracks = []
 getElement.video_window.disablePictureInPicture = true;
 getElement.video_window.textTracks[0].mode = "showing"
 
+function cleanLocalStorage(){
+    for (let i = 0; i < saveViews.length; i++) {
+        if(saveViews[i].view === false){
+            saveViews.splice(i, 1);
+        }
+    }
+}
+
 function readFileFolder(dir) {
-    let trackElement,
-        trackNumber = 0;
+    let trackElement;
 
     getElement.listFolder.innerHTML = "";
 
-    fs.readdir(dir, function (err, files) {
-        const collator = new Intl.Collator(undefined, {
-            numeric: true,
-            sensitivity: "base",
-        });
-        files.sort(collator.compare);
+    let files = fs.readdirSync(dir)
 
-        if (files.find((item) => item.match(/.mp4/g))) {
-            tracks = []
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].match(/.mp4/g)) {
-                    trackElement = create.elements("div");
-                    trackElement.innerHTML = files[i];
-                    trackElement.setAttribute("class", "btn_chapter");
-                    trackElement.setAttribute("track", trackNumber++);
-                    getElement.listFolder.innerHTML += `<div class="track_section" id="track-section">${trackElement.outerHTML}<input class="view_check" type="checkbox"></div`;
+    const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base", });
+    files.sort(collator.compare);
 
-                    let obj = saveViews.find((obj) => obj.title === trackElement.innerHTML);
+    if (files.find((item) => item.match(/.mp4/g))) {
+        cleanLocalStorage()
+        tracks = []
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].match(/.mp4/g)) {
+                trackElement = create.elements("div");
+                trackElement.innerHTML = files[i];
+                trackElement.setAttribute("class", "btn_chapter");
+                getElement.listFolder.innerHTML += stringElement.trackSectionString(trackElement)
 
-                    if (!obj) {
-                        saveViews.push({
-                            title: trackElement.innerHTML,
-                            view: false,
-                        });
-                    }
-
-                    tracks.push({
-                        name: files[i],
-                        route: path.join(dir, files[i]),
-                        view : false
-                    })
+                let obj = saveViews.find((obj) => obj.title === trackElement.innerHTML);
+                if (!obj) {
+                    saveViews.push({
+                        title: trackElement.innerHTML,
+                        view: false,
+                    });
                 }
-            }
 
-            getElement.listFolder.classList.replace("folder-list", "list");
-
-            //Asigna los valores de visto a los checkbox
-            if (localStorage.length > 0) {
-                for (let i = 0; i < getElement.view_check.length; i++) {
-                    let obj = saveViews.find((obj) => obj.title === getElement.view_check[i].previousSibling.innerHTML);
-                    getElement.view_check[i].checked = obj ? obj.view : false;
-                    tracks[i].view = obj ? obj.view : false
-                }
+                tracks.push({
+                    name: files[i],
+                    route: path.join(dir, files[i]),
+                    view: false
+                })
             }
-        } else {
-            getElement.listFolder.classList.replace("list", "folder-list");
-            loadHistoryFolder(dir, files);
         }
-        
-        localStorage.setItem("local", JSON.stringify(saveViews));
-    });
+        getElement.listFolder.classList.replace("folder-list", "list");
+
+        //Asigna los valores de visto a los checkbox
+        if (localStorage.length > 0) {
+            for (let i = 0; i < getElement.view_check.length; i++) {
+                let obj = saveViews.find((obj) => obj.title === getElement.view_check[i].previousSibling.innerHTML);
+                getElement.view_check[i].checked = obj ? obj.view : false;
+                tracks[i].view = obj ? obj.view : false
+            }
+        }
+    } else {
+        getElement.listFolder.classList.replace("list", "folder-list");
+        loadHistoryFolder(dir, files);
+    }
+
+    localStorage.setItem("local", JSON.stringify(saveViews));
+
 }
 
 ipcRenderer.on("dir", (err, dir) => {
-    track = 0;
-    folder = dir;
     if (historyFolders > 0) {
         if (!historyFolders.find((obj) => obj.name === dir)) {
             historyFolders.push({ name: dir });
@@ -97,8 +98,8 @@ getElement.video_window.onended = () => {
     let index = tracks.find(obj => obj.name === currentVideo);
     index.view = true
 
-    nextTrack = tracks.indexOf(index)  
-    
+    nextTrack = tracks.indexOf(index)
+
 
     let obj = saveViews.find(
         (obj) => obj.title === currentVideo
@@ -114,7 +115,7 @@ getElement.video_window.onended = () => {
             getElement.video_window.setAttribute("nameFile", tracks[nextTrack].name)
             getElement.video_window.src = tracks[nextTrack].route
             getElement.subTrack.src = convert(tracks[nextTrack].route.substring(0, tracks[nextTrack].route.lastIndexOf(".")))
-            
+
             trackViewStyle(tracks)
 
             //cleanSelectChapter(checkView, trackSecArray);
@@ -122,19 +123,16 @@ getElement.video_window.onended = () => {
     }
 };
 
-let route;
-
 //Select track or folder
 getElement.listFolder.addEventListener("click", (e) => {
     if (e.target.parentNode.className === "folders_items") {
-        folder = e.target.parentNode.getAttribute("route");
+        let folder = e.target.parentNode.getAttribute("route");
         backHistory.push(folder);
         readFileFolder(folder);
         trackViewStyle(tracks)
     } else if (e.target.className === "btn_chapter") {
-        track = selectTrack(tracks, e.target);
+        selectTrack(tracks, e.target);
         trackViewStyle(tracks)
-        //cleanSelectChapter(e.target);
     } else if (e.target.className === "view_check") {
         saveViews = changeViewStatus(e.target, saveViews);
         localStorage.setItem("local", JSON.stringify(saveViews));

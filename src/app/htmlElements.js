@@ -22,5 +22,8 @@ module.exports = {
         nameFolder: folder => {
             return `<div class="img-folder"></div><p>${folder.substring(folder.lastIndexOf("\\") + 1)}</>`;
         },
+        trackSectionString: (trackElement) =>{
+            return `<div class="track_section" id="track-section">${trackElement.outerHTML}<input class="view_check" type="checkbox"></div`;
+        }
     },
 };
