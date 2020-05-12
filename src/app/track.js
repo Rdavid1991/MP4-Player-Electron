@@ -1,13 +1,15 @@
+
+
 const path = require("path")
 const { getElement } = require("./htmlElements");
-const convert = require("./subtitle")
+const {getSubtitle} = require("./subtitle")
 
-module.exports = track = {
+module.exports = {
     selectTrack: (dirArray, selectTrack) => {
         let track = dirArray.find(obj => obj.name === selectTrack.innerText)
         getElement.video_window.setAttribute("nameFile", track.name)
         getElement.video_window.src = track.route
-        getElement.subTrack.src = convert(track.route.substring(0, track.route.lastIndexOf(".")))
+        getElement.subTrack.src = getSubtitle(track.route.substring(0, track.route.lastIndexOf(".")))
     },
 
     changeViewStatus: (checkView, saveArray) => {

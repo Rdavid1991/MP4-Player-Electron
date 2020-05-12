@@ -1,3 +1,5 @@
+"use strict"
+const fs = require("fs")
 const path = require("path")
 const { create, stringElement, getElement } = require("./htmlElements");
 
@@ -5,11 +7,13 @@ module.exports = {
 
     loadHistoryFolder: (dir, array) => {
         for (let i = 0; i < array.length; i++) {
-            let div = create.elements("div");
-            div.innerHTML = `<div class="img-folder"></div><p>${array[i]}</>`;
-            div.setAttribute("class", "folders_items");
-            div.setAttribute("route", path.join(dir, array[i]));
-            getElement.listFolder.appendChild(div);
+            if (fs.lstatSync(path.join(dir,array[i])).isDirectory()) {
+                let div = create.elements("div");
+                div.innerHTML = `<div class="img-folder"></div><p>${array[i]}</>`;
+                div.setAttribute("class", "folders_items");
+                div.setAttribute("route", path.join(dir, array[i]));
+                getElement.listFolder.appendChild(div);
+            }
         }
     },
 
@@ -24,4 +28,6 @@ module.exports = {
         div.setAttribute("route", folder);
         getElement.listFolder.appendChild(div);
     },
+
+
 }

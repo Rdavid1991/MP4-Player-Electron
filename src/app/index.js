@@ -1,9 +1,11 @@
-const { ipcRenderer } = require("electron");
-const { remote } = require('electron')
+"use strict";
+
+const { ipcRenderer, shell } = require("electron");
 const { create, getElement, stringElement } = require("./htmlElements");
 const { principalFolder, saveHistoryFolder, loadHistoryFolder } = require("./directory");
-const { cleanSelectChapter, selectTrack, changeViewStatus, trackViewStyle } = require("./track");
-const convert = require("./subtitle")
+const { selectTrack, changeViewStatus, trackViewStyle } = require("./track");
+const {getFolderName} = require("./helpers")
+const {getSubtitle} = require("./subtitle")
 const fs = require("fs");
 const path = require("path");
 
@@ -15,9 +17,9 @@ let tracks = []
 getElement.video_window.disablePictureInPicture = true;
 getElement.video_window.textTracks[0].mode = "showing"
 
-function cleanLocalStorage(){
+function cleanLocalStorage() {
     for (let i = 0; i < saveViews.length; i++) {
-        if(saveViews[i].view === false){
+        if (saveViews[i].view === false) {
             saveViews.splice(i, 1);
         }
     }
@@ -25,8 +27,7 @@ function cleanLocalStorage(){
 
 function readFileFolder(dir) {
     let trackElement;
-
-    getElement.listFolder.innerHTML = "";
+    getElement.listFolder.innerHTML = ""
 
     let files = fs.readdirSync(dir)
 
@@ -46,15 +47,15 @@ function readFileFolder(dir) {
                 let obj = saveViews.find((obj) => obj.title === trackElement.innerHTML);
                 if (!obj) {
                     saveViews.push({
-                        title: trackElement.innerHTML,
-                        view: false,
+                        "title": trackElement.innerHTML,
+                        "view": false,
                     });
                 }
 
                 tracks.push({
-                    name: files[i],
-                    route: path.join(dir, files[i]),
-                    view: false
+                    "name": files[i],
+                    "route": path.join(dir, files[i]),
+                    "view": false
                 })
             }
         }
@@ -72,20 +73,19 @@ function readFileFolder(dir) {
         getElement.listFolder.classList.replace("list", "folder-list");
         loadHistoryFolder(dir, files);
     }
-
+    
     localStorage.setItem("local", JSON.stringify(saveViews));
-
 }
 
 ipcRenderer.on("dir", (err, dir) => {
-    if (historyFolders > 0) {
+    if (historyFolders.length > 0) {
         if (!historyFolders.find((obj) => obj.name === dir)) {
-            historyFolders.push({ name: dir });
+            historyFolders.push({ "name": dir });
             saveHistoryFolder(historyFolders);
             principalFolder(dir);
         }
     } else {
-        historyFolders.push({ name: dir });
+        historyFolders.push({ "name": dir });
         saveHistoryFolder(historyFolders);
         principalFolder(dir);
     }
@@ -98,38 +98,36 @@ getElement.video_window.onended = () => {
     let index = tracks.find(obj => obj.name === currentVideo);
     index.view = true
 
-    nextTrack = tracks.indexOf(index)
+    let nextTrack = tracks.indexOf(index)
 
 
-    let obj = saveViews.find(
-        (obj) => obj.title === currentVideo
-    );
+    let obj = saveViews.find((obj) => obj.title === currentVideo);
     if (obj) {
         obj.view = true;
         localStorage.setItem("local", JSON.stringify(saveViews));
     }
-
-    if (nextTrack < tracks.length) {
-        setTimeout(() => {
+    setTimeout(() => {
+        if (nextTrack < tracks.length - 1) {
             nextTrack++;
             getElement.video_window.setAttribute("nameFile", tracks[nextTrack].name)
             getElement.video_window.src = tracks[nextTrack].route
-            getElement.subTrack.src = convert(tracks[nextTrack].route.substring(0, tracks[nextTrack].route.lastIndexOf(".")))
-
-            trackViewStyle(tracks)
-
-            //cleanSelectChapter(checkView, trackSecArray);
-        }, 1500);
-    }
+            getElement.subTrack.src = getSubtitle(tracks[nextTrack].route.substring(0, tracks[nextTrack].route.lastIndexOf(".")))
+        }
+        trackViewStyle(tracks)
+    }, 1500);
 };
 
 //Select track or folder
 getElement.listFolder.addEventListener("click", (e) => {
     if (e.target.parentNode.className === "folders_items") {
-        let folder = e.target.parentNode.getAttribute("route");
-        backHistory.push(folder);
-        readFileFolder(folder);
+
+        let routeFolder = e.target.parentNode.getAttribute("route");
+        backHistory.push(routeFolder);
+        readFileFolder(routeFolder);
         trackViewStyle(tracks)
+
+        getElement.folderTitle.innerHTML = getFolderName(routeFolder)
+
     } else if (e.target.className === "btn_chapter") {
         selectTrack(tracks, e.target);
         trackViewStyle(tracks)
@@ -144,15 +142,18 @@ getElement.backButton.addEventListener("click", (e) => {
         let route = backHistory.pop();
         route = route.substring(0, route.lastIndexOf("\\"));
         readFileFolder(route);
+        getElement.folderTitle.innerHTML = getFolderName(route)
     } else {
         getElement.listFolder.classList.replace("list", "folder-list");
         getElement.listFolder.innerHTML = "";
         historyFolders = JSON.parse(localStorage.getItem("folders"));
 
-        historyFolders.forEach((e) => {
-            principalFolder(e.name);
+        historyFolders.forEach((mainDir) => {
+            principalFolder(mainDir.name);
         });
+        getElement.folderTitle.innerHTML = "Todas las carpetas"
         backHistory = [];
+      
     }
 });
 
@@ -175,3 +176,9 @@ if (localStorage.getItem("folders")) {
         principalFolder(e.name);
     });
 }
+
+//shell.openItem("C:\\Users\\david\\Downloads\\Teoria_Charla.pptx")
+
+//shell.showItemInFolder("C:\\Users\\david\\Downloads")
+
+//shell.beep()

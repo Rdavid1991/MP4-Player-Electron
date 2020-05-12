@@ -10,7 +10,6 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: true
 		}
-
 	})
 
 	const mainMenu = Menu.buildFromTemplate(template);

@@ -1,16 +1,33 @@
+"use strict";
 const fs = require("fs")
 const path = require("path")
+const {app} = require("electron").remote
 
+function getSubtitle(dir) {
+    let subtitleName = dir.substring(dir.lastIndexOf("\\" || "/") + 1);
 
-function convert(dir) {
-    fs.mkdirSync(path.join(__dirname, "../subtitle"), { recursive: true })
-    if (fs.existsSync(dir + ".srt")) {
-        let subtitle = srt2webvtt(fs.readFileSync(dir + ".srt", 'utf8'))
-        fs.writeFileSync(path.join(__dirname, "../subtitle/subtitle.vtt"), subtitle, 'utf8')
-        return path.join(__dirname, "../subtitle/subtitle.vtt")
-    } else if (fs.existsSync(dir + ".vtt")) {
-        return path.join(dir + ".vtt")
+    if (fs.existsSync(path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`))) {
+
+        return path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`)
+
+    }else{
+
+        if (fs.existsSync(dir + ".srt")) {
+
+            fs.mkdirSync(path.join(app.getPath("temp"), "MP4-player/subtitle"), { recursive: true })
+
+            let subtitleVTT = srt2webvtt(fs.readFileSync(dir + ".srt", 'utf8'))
+            fs.writeFileSync(path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`), subtitleVTT, 'utf8')
+
+            return path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`)
+
+        } else if (fs.existsSync(dir + ".vtt")) {
+
+            return dir + ".vtt"
+
+        }
     }
+    return ""
 }
 
 function srt2webvtt(data) {
@@ -71,4 +88,4 @@ function convertSrtCue(caption) {
     return cue;
 }
 
-module.exports = convert
+module.exports = {getSubtitle}
