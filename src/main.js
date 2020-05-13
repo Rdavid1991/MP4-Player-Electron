@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron')
+const { app, BrowserWindow, Menu, dialog } = require("electron");
 
 let win;
 function createWindow() {
@@ -10,45 +10,45 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: true
 		}
-	})
+	});
 
 	const mainMenu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(mainMenu);
 
 	// and load the index.html of the app.
-	win.loadFile(__dirname + '/index.html')
+	win.loadFile(__dirname + "/index.html");
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
 
-template = [
+let template = [
 	{
 		label: "File",
 		submenu: [
 			{
 				label: "Open Folder",
 				click() {
-					let dir = dialog.showOpenDialogSync({properties: ['openDirectory'] })
+					let dir = dialog.showOpenDialogSync({properties: ["openDirectory"] });
 					if (dir) {
-						win.webContents.send("dir", dir[0])
+						win.webContents.send("dir", dir[0]);
 					}
 				}
 			}
 		]
 	},
 	{
-		label: 'DevTools',
+		label: "DevTools",
 		submenu: [
 			{
-				label: 'Show/Hide Dev Tools',
-				accelerator: process.platform == 'darwin' ? 'Comand+D' : 'Ctrl+D',
+				label: "Show/Hide Dev Tools",
+				accelerator: process.platform == "darwin" ? "Comand+D" : "Ctrl+D",
 				click(item, focusedWindow) {
 					focusedWindow.toggleDevTools();
 				}
 			},
 			{
-				role: 'reload'
+				role: "reload"
 			}
 		]
 	}
-]
+];

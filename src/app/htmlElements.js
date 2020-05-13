@@ -1,5 +1,5 @@
 
-const {getFolderName} = require("./helpers")
+const {getFolderName} = require("./helpers");
 
 module.exports = {
     getElement: {

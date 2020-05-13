@@ -1,21 +1,21 @@
 "use strict";
 
-const { ipcRenderer, shell } = require("electron");
-const { create, getElement, stringElement } = require("./htmlElements");
-const { principalFolder, saveHistoryFolder, loadHistoryFolder } = require("./directory");
-const { selectTrack, changeViewStatus, trackViewStyle } = require("./track");
-const {getFolderName} = require("./helpers")
-const {getSubtitle} = require("./subtitle")
+const { ipcRenderer } = require("electron");
+const { getElement } = require("./htmlElements");
+const { principalFolder, saveHistoryFolder, createFolderView } = require("./directory");
+const { selectTrack, changeViewStatus, trackViewStyle, createTrackView } = require("./track");
+const {getFolderName} = require("./helpers");
+const {getSubtitle} = require("./subtitle");
 const fs = require("fs");
 const path = require("path");
 
 let saveViews = [];
 let historyFolders = [];
 let backHistory = [];
-let tracks = []
+let tracks = [];
 
 getElement.video_window.disablePictureInPicture = true;
-getElement.video_window.textTracks[0].mode = "showing"
+getElement.video_window.textTracks[0].mode = "showing";
 
 function cleanLocalStorage() {
     for (let i = 0; i < saveViews.length; i++) {
@@ -27,22 +27,20 @@ function cleanLocalStorage() {
 
 function readFileFolder(dir) {
     let trackElement;
-    getElement.listFolder.innerHTML = ""
+    getElement.listFolder.innerHTML = "";
 
-    let files = fs.readdirSync(dir)
+    let files = fs.readdirSync(dir);
 
     const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base", });
     files.sort(collator.compare);
 
     if (files.find((item) => item.match(/.mp4/g))) {
-        cleanLocalStorage()
-        tracks = []
+        cleanLocalStorage();
+        tracks = [];
         for (let i = 0; i < files.length; i++) {
             if (files[i].match(/.mp4/g)) {
-                trackElement = create.elements("div");
-                trackElement.innerHTML = files[i];
-                trackElement.setAttribute("class", "btn_chapter");
-                getElement.listFolder.innerHTML += stringElement.trackSectionString(trackElement)
+
+                trackElement = createTrackView(files[i]);
 
                 let obj = saveViews.find((obj) => obj.title === trackElement.innerHTML);
                 if (!obj) {
@@ -56,28 +54,27 @@ function readFileFolder(dir) {
                     "name": files[i],
                     "route": path.join(dir, files[i]),
                     "view": false
-                })
+                });
             }
         }
         getElement.listFolder.classList.replace("folder-list", "list");
 
-        //Asigna los valores de visto a los checkbox
-        if (localStorage.length > 0) {
+        if (saveViews.length > 0) {
             for (let i = 0; i < getElement.view_check.length; i++) {
                 let obj = saveViews.find((obj) => obj.title === getElement.view_check[i].previousSibling.innerHTML);
                 getElement.view_check[i].checked = obj ? obj.view : false;
-                tracks[i].view = obj ? obj.view : false
+                tracks[i].view = obj ? obj.view : false;
             }
         }
     } else {
         getElement.listFolder.classList.replace("list", "folder-list");
-        loadHistoryFolder(dir, files);
+        createFolderView(dir, files);
     }
     
     localStorage.setItem("local", JSON.stringify(saveViews));
 }
 
-ipcRenderer.on("dir", (err, dir) => {
+ipcRenderer.on("dir", (_err, dir) => {
     if (historyFolders.length > 0) {
         if (!historyFolders.find((obj) => obj.name === dir)) {
             historyFolders.push({ "name": dir });
@@ -94,11 +91,11 @@ ipcRenderer.on("dir", (err, dir) => {
 //when video is finish
 getElement.video_window.onended = () => {
 
-    let currentVideo = getElement.video_window.getAttribute("nameFile")
+    let currentVideo = getElement.video_window.getAttribute("nameFile");
     let index = tracks.find(obj => obj.name === currentVideo);
-    index.view = true
+    index.view = true;
 
-    let nextTrack = tracks.indexOf(index)
+    let nextTrack = tracks.indexOf(index);
 
 
     let obj = saveViews.find((obj) => obj.title === currentVideo);
@@ -109,11 +106,11 @@ getElement.video_window.onended = () => {
     setTimeout(() => {
         if (nextTrack < tracks.length - 1) {
             nextTrack++;
-            getElement.video_window.setAttribute("nameFile", tracks[nextTrack].name)
-            getElement.video_window.src = tracks[nextTrack].route
-            getElement.subTrack.src = getSubtitle(tracks[nextTrack].route.substring(0, tracks[nextTrack].route.lastIndexOf(".")))
+            getElement.video_window.setAttribute("nameFile", tracks[nextTrack].name);
+            getElement.video_window.src = tracks[nextTrack].route;
+            getElement.subTrack.src = getSubtitle(tracks[nextTrack].route.substring(0, tracks[nextTrack].route.lastIndexOf(".")));
         }
-        trackViewStyle(tracks)
+        trackViewStyle(tracks);
     }, 1500);
 };
 
@@ -124,25 +121,25 @@ getElement.listFolder.addEventListener("click", (e) => {
         let routeFolder = e.target.parentNode.getAttribute("route");
         backHistory.push(routeFolder);
         readFileFolder(routeFolder);
-        trackViewStyle(tracks)
+        trackViewStyle(tracks);
 
-        getElement.folderTitle.innerHTML = getFolderName(routeFolder)
+        getElement.folderTitle.innerHTML = getFolderName(routeFolder);
 
     } else if (e.target.className === "btn_chapter") {
         selectTrack(tracks, e.target);
-        trackViewStyle(tracks)
+        trackViewStyle(tracks);
     } else if (e.target.className === "view_check") {
         saveViews = changeViewStatus(e.target, saveViews);
         localStorage.setItem("local", JSON.stringify(saveViews));
     }
 });
 
-getElement.backButton.addEventListener("click", (e) => {
+getElement.backButton.addEventListener("click", () => {
     if (backHistory.length > 1) {
         let route = backHistory.pop();
         route = route.substring(0, route.lastIndexOf("\\"));
         readFileFolder(route);
-        getElement.folderTitle.innerHTML = getFolderName(route)
+        getElement.folderTitle.innerHTML = getFolderName(route);
     } else {
         getElement.listFolder.classList.replace("list", "folder-list");
         getElement.listFolder.innerHTML = "";
@@ -151,14 +148,14 @@ getElement.backButton.addEventListener("click", (e) => {
         historyFolders.forEach((mainDir) => {
             principalFolder(mainDir.name);
         });
-        getElement.folderTitle.innerHTML = "Todas las carpetas"
+        getElement.folderTitle.innerHTML = "Todas las carpetas";
         backHistory = [];
       
     }
 });
 
-getElement.menuButton.addEventListener('click', (e) => {
-    let menu = getElement.menuButton.classList.toggle('change');
+getElement.menuButton.addEventListener("click", () => {
+    let menu = getElement.menuButton.classList.toggle("change");
     if (menu) {
         getElement.side_nav.style.display = "block";
     } else {

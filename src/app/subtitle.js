@@ -1,42 +1,42 @@
 "use strict";
-const fs = require("fs")
-const path = require("path")
-const {app} = require("electron").remote
+const fs = require("fs");
+const path = require("path");
+const {app} = require("electron").remote;
 
 function getSubtitle(dir) {
     let subtitleName = dir.substring(dir.lastIndexOf("\\" || "/") + 1);
 
     if (fs.existsSync(path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`))) {
 
-        return path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`)
+        return path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`);
 
     }else{
 
         if (fs.existsSync(dir + ".srt")) {
 
-            fs.mkdirSync(path.join(app.getPath("temp"), "MP4-player/subtitle"), { recursive: true })
+            fs.mkdirSync(path.join(app.getPath("temp"), "MP4-player/subtitle"), { recursive: true });
 
-            let subtitleVTT = srt2webvtt(fs.readFileSync(dir + ".srt", 'utf8'))
-            fs.writeFileSync(path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`), subtitleVTT, 'utf8')
+            let subtitleVTT = srt2webvtt(fs.readFileSync(dir + ".srt", "utf8"));
+            fs.writeFileSync(path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`), subtitleVTT, "utf8");
 
-            return path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`)
+            return path.join(app.getPath("temp"),`MP4-player/subtitle/${subtitleName}.vtt`);
 
         } else if (fs.existsSync(dir + ".vtt")) {
 
-            return dir + ".vtt"
+            return dir + ".vtt";
 
         }
     }
-    return ""
+    return "";
 }
 
 function srt2webvtt(data) {
     // remove dos newlines
-    var srt = data.replace(/\r+/g, '');
+    var srt = data.replace(/\r+/g, "");
     // trim white space start and end
-    srt = srt.replace(/^\s+|\s+$/g, '');
+    srt = srt.replace(/^\s+|\s+$/g, "");
     // get cues
-    var cuelist = srt.split('\n\n');
+    var cuelist = srt.split("\n\n");
     var result = "";
     if (cuelist.length > 0) {
         result += "WEBVTT\n\n";
@@ -55,7 +55,7 @@ function convertSrtCue(caption) {
     // concatenate muilt-line string separated in array into one
     while (s.length > 3) {
         for (var i = 3; i < s.length; i++) {
-            s[2] += "\n" + s[i]
+            s[2] += "\n" + s[i];
         }
         s.splice(3, s.length - 3);
     }
@@ -88,4 +88,4 @@ function convertSrtCue(caption) {
     return cue;
 }
 
-module.exports = {getSubtitle}
+module.exports = {getSubtitle};

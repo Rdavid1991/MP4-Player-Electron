@@ -1,11 +1,11 @@
-"use strict"
-const fs = require("fs")
-const path = require("path")
+"use strict";
+const fs = require("fs");
+const path = require("path");
 const { create, stringElement, getElement } = require("./htmlElements");
 
 module.exports = {
 
-    loadHistoryFolder: (dir, array) => {
+    createFolderView: (dir, array) => {
         for (let i = 0; i < array.length; i++) {
             if (fs.lstatSync(path.join(dir,array[i])).isDirectory()) {
                 let div = create.elements("div");
@@ -30,4 +30,4 @@ module.exports = {
     },
 
 
-}
+};
