@@ -4,8 +4,8 @@ const { ipcRenderer } = require("electron");
 const { getElement } = require("./htmlElements");
 const { principalFolder, saveHistoryFolder, createFolderView } = require("./directory");
 const { selectTrack, changeViewStatus, trackViewStyle, createTrackView } = require("./track");
-const {getFolderName} = require("./helpers");
-const {getSubtitle} = require("./subtitle");
+const { getFolderName } = require("./helpers");
+const { getSubtitle } = require("./subtitle");
 const fs = require("fs");
 const path = require("path");
 
@@ -26,7 +26,7 @@ function cleanLocalStorage() {
 }
 
 function readFileFolder(dir) {
-    let trackElement;
+
     getElement.listFolder.innerHTML = "";
 
     let files = fs.readdirSync(dir);
@@ -40,12 +40,12 @@ function readFileFolder(dir) {
         for (let i = 0; i < files.length; i++) {
             if (files[i].match(/.mp4/g)) {
 
-                trackElement = createTrackView(files[i]);
+                createTrackView(files[i]);
 
-                let obj = saveViews.find((obj) => obj.title === trackElement.innerHTML);
+                let obj = saveViews.find((obj) => obj.title === files[i]);
                 if (!obj) {
                     saveViews.push({
-                        "title": trackElement.innerHTML,
+                        "title": files[i],
                         "view": false,
                     });
                 }
@@ -57,7 +57,8 @@ function readFileFolder(dir) {
                 });
             }
         }
-        getElement.listFolder.classList.replace("folder-list", "list");
+
+        getElement.listFolder.classList.replace("folder-grid", "list");
 
         if (saveViews.length > 0) {
             for (let i = 0; i < getElement.view_check.length; i++) {
@@ -67,10 +68,10 @@ function readFileFolder(dir) {
             }
         }
     } else {
-        getElement.listFolder.classList.replace("list", "folder-list");
+        getElement.listFolder.classList.replace("list", "folder-grid");
         createFolderView(dir, files);
     }
-    
+
     localStorage.setItem("local", JSON.stringify(saveViews));
 }
 
@@ -116,7 +117,8 @@ getElement.video_window.onended = () => {
 
 //Select track or folder
 getElement.listFolder.addEventListener("click", (e) => {
-    if (e.target.parentNode.className === "folders_items") {
+ 
+    if (e.target.parentNode.getAttribute("name") === "folder-item") {
 
         let routeFolder = e.target.parentNode.getAttribute("route");
         backHistory.push(routeFolder);
@@ -141,7 +143,7 @@ getElement.backButton.addEventListener("click", () => {
         readFileFolder(route);
         getElement.folderTitle.innerHTML = getFolderName(route);
     } else {
-        getElement.listFolder.classList.replace("list", "folder-list");
+        getElement.listFolder.classList.replace("list", "folder-grid");
         getElement.listFolder.innerHTML = "";
         historyFolders = JSON.parse(localStorage.getItem("folders"));
 
@@ -150,7 +152,7 @@ getElement.backButton.addEventListener("click", () => {
         });
         getElement.folderTitle.innerHTML = "Todas las carpetas";
         backHistory = [];
-      
+
     }
 });
 
@@ -160,6 +162,49 @@ getElement.menuButton.addEventListener("click", () => {
         getElement.side_nav.style.display = "block";
     } else {
         getElement.side_nav.style.display = "none";
+    }
+});
+
+getElement.viewToggle.addEventListener("click", (e) => {
+    let optionView;
+    console.log(e.target.id);
+    
+
+    switch (e.target.id) {
+        case "grid":
+
+            optionView = [{"viewSelect":"grid"}];
+            localStorage.setItem("optionView",JSON.stringify(optionView));
+            getElement.listFolder.classList.replace("folder-list","folder-grid");
+            
+            getElement.folderItem.forEach(folderElement => {
+                folderElement.classList.replace("folder-items-list","folder-items-grid");
+            });
+
+            getElement.imgFolder.forEach((e)=>{
+                e.classList.replace("img-folder-list","img-folder-grid");
+            });
+
+            break;
+
+        case "list":
+            
+            optionView = [{"viewSelect":"list"}];
+            localStorage.setItem("optionView",JSON.stringify(optionView));
+            getElement.listFolder.classList.replace("folder-grid","folder-list");
+            
+            getElement.folderItem.forEach(folderElement => {
+                folderElement.classList.replace("folder-items-grid","folder-items-list");
+            });
+
+            getElement.imgFolder.forEach((e)=>{
+                e.classList.replace("img-folder-grid","img-folder-list");
+            });
+
+            break;
+
+        default:
+            break;
     }
 });
 

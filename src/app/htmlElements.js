@@ -13,7 +13,10 @@ module.exports = {
         listFolder :document.getElementById("list-folder"),
         backButton:document.getElementById("back-button"),
         subTrack : document.getElementsByTagName("track")[0],
-        folderTitle: document.getElementById("folderTitle")
+        folderTitle: document.getElementById("folderTitle"),
+        viewToggle: document.getElementById("view-toggle"),
+        folderItem:document.getElementsByName("folder-item"),
+        imgFolder:document.getElementsByName("img-folder")
     },
 
     create: {
@@ -23,12 +26,19 @@ module.exports = {
     },
 
     stringElement: {
+        //Return name folder to principal folders
         nameFolder: (folder) => {
-            return `<div class="img-folder"></div><p>${getFolderName(folder)}</>`;
+            return `<div name="img-folder" class="img-folder-grid"></div><p>${getFolderName(folder)}</>`;
         },
 
         trackSectionString: (trackElement) =>{
             return `<div class="track_section" id="track-section">${trackElement.outerHTML}<input class="view_check" type="checkbox"></div`;
+        },
+
+        getHTMLFolder:(folderName)=>{
+            return `<div name="img-folder" class="img-folder-grid"></div><p>${folderName}</p>`;
         }
+
+
     },
 };

@@ -1,60 +1,8 @@
-/* Style the tab content */
-.folder-container {
-    padding: 6px 12px;
-    border-top: none;
-    position: absolute;
-    top: 7rem;
-    width: 92%;
-}
+@import "folder_view_list", "folder_view_grid";
 
 .menu-tab {
     display: flex;
     justify-content: center;
-}
-
-.folders_items {
-    margin: 0.5rem;
-    cursor: pointer;
-    font-size: 14px;
-    font-family: arial;
-    text-align: center;
-    width: 11rem;
-    height: 11rem;
-}
-
-.img-folder {
-    height: 7rem;
-    background: url(../img/interface.png);
-    background-repeat: no-repeat;
-    background-size: 100px 100px;
-    background-position: center;
-    transition: 1s;
-    &:active{
-        background-size: 110px 110px;
-    }
-}
-
-.folder-list {
-    display: flex;
-    height: 73vh;
-    overflow-y: auto;
-    flex-wrap: wrap;
-    flex-direction: row;
-
-    p {
-        color: white;
-        margin: 0;
-    }
-    &::-webkit-scrollbar {
-        width: 7px;
-    }
-    &::-webkit-scrollbar-thumb {
-        background: radial-gradient(#673ab738, #607d8b);
-        border-radius: 10px;
-    }
-    &::-webkit-scrollbar-track {
-        border-radius: 10px;
-    }
 }
 
 .folder-title {
@@ -70,12 +18,40 @@
     font-family: sans-serif;;
 }
 
+.list-toggle{
+    position: absolute;
+    top: 6rem;
+    left: 6rem;
+    display: flex;
+    width: 6rem;
+    justify-content: space-between;
+    .view-grid{
+        background: url(../img/grid.svg);
+        background-repeat: no-repeat;
+        filter: contrast(0.8) invert(0.8);
+        width: 2rem;
+        height: 2rem;
+        cursor: pointer;
+    }
+    .view-list{
+        background: url(../img/list.svg);
+        background-repeat: no-repeat;
+        filter: contrast(0.8) invert(0.8);
+        width: 2rem;
+        height: 2rem;
+        cursor: pointer;
+    }
+}
+
 .btn_chapter {
     cursor: pointer;
     padding: 5px;
     font-family: arial;
     width: 60%;
     color: white;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .track_section {
@@ -87,6 +63,7 @@
     border-radius: 50px;
     border-style: outset;
     border-color: rgb(255, 127, 80,0.7);
+
     &:hover{
         background-color: gray;
     }

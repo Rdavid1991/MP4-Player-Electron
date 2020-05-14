@@ -1,0 +1,47 @@
+.img-folder-grid {
+    height: 7rem;
+    background: url(../img/interface.png);
+    background-repeat: no-repeat;
+    background-size: 100px 100px;
+    background-position: center;
+}
+
+.folder-items-grid {
+    margin: 0.5rem;
+    cursor: pointer;
+    width: 9rem;
+    height: 9rem;
+    p {
+        color: white;
+        margin: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;
+        font-size: 14px;
+        font-family: arial;
+        width: 100%;
+    }
+}
+
+.folder-grid {
+    display: flex;
+    height: 73vh;
+    width: 90%;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    flex-direction: row;
+    position: fixed;
+    top: 7rem;
+
+    &::-webkit-scrollbar {
+        width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: radial-gradient(#673ab738, #607d8b);
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+        border-radius: 10px;
+    }
+}

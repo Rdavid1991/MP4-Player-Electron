@@ -72,8 +72,9 @@
   overflow: scroll;
   overflow-x: hidden;
   height: 60vh;
-  width: 100%;
-  bottom: 6rem;
+  width: 90%;
+  top: 7rem;
+  position: fixed;
 }
 
 .list::-webkit-scrollbar {
@@ -96,52 +97,37 @@
   background: #b30000;
 }
 
-/* Style the tab content */
-.folder-container {
-  padding: 6px 12px;
-  border-top: none;
-  position: absolute;
-  top: 7rem;
-  width: 92%;
-}
-
-.menu-tab {
-  display: flex;
-  justify-content: center;
-}
-
-.folders_items {
-  margin: 0.5rem;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: arial;
-  text-align: center;
-  width: 11rem;
-  height: 11rem;
-}
-
-.img-folder {
-  height: 7rem;
+.img-folder-list {
+  height: 1.5rem;
+  width: 1.5rem;
   background: url(../img/interface.png);
   background-repeat: no-repeat;
-  background-size: 100px 100px;
+  background-size: 15px 15px;
   background-position: center;
-  transition: 1s;
 }
-.img-folder:active {
-  background-size: 110px 110px;
+
+.folder-items-list {
+  margin: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.folder-items-list p {
+  color: white;
+  margin: 0;
+  font-size: 14px;
+  font-family: arial;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .folder-list {
-  display: flex;
   height: 73vh;
-  overflow-y: auto;
-  flex-wrap: wrap;
-  flex-direction: row;
-}
-.folder-list p {
-  color: white;
-  margin: 0;
+  width: 90%;
+  position: fixed;
+  top: 7rem;
 }
 .folder-list::-webkit-scrollbar {
   width: 7px;
@@ -152,6 +138,58 @@
 }
 .folder-list::-webkit-scrollbar-track {
   border-radius: 10px;
+}
+
+.img-folder-grid {
+  height: 7rem;
+  background: url(../img/interface.png);
+  background-repeat: no-repeat;
+  background-size: 100px 100px;
+  background-position: center;
+}
+
+.folder-items-grid {
+  margin: 0.5rem;
+  cursor: pointer;
+  width: 9rem;
+  height: 9rem;
+}
+.folder-items-grid p {
+  color: white;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-size: 14px;
+  font-family: arial;
+  width: 100%;
+}
+
+.folder-grid {
+  display: flex;
+  height: 73vh;
+  width: 90%;
+  overflow-y: auto;
+  flex-wrap: wrap;
+  flex-direction: row;
+  position: fixed;
+  top: 7rem;
+}
+.folder-grid::-webkit-scrollbar {
+  width: 7px;
+}
+.folder-grid::-webkit-scrollbar-thumb {
+  background: radial-gradient(#673ab738, #607d8b);
+  border-radius: 10px;
+}
+.folder-grid::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+.menu-tab {
+  display: flex;
+  justify-content: center;
 }
 
 .folder-title {
@@ -167,12 +205,40 @@
   font-family: sans-serif;
 }
 
+.list-toggle {
+  position: absolute;
+  top: 6rem;
+  left: 6rem;
+  display: flex;
+  width: 6rem;
+  justify-content: space-between;
+}
+.list-toggle .view-grid {
+  background: url(../img/grid.svg);
+  background-repeat: no-repeat;
+  filter: contrast(0.8) invert(0.8);
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+.list-toggle .view-list {
+  background: url(../img/list.svg);
+  background-repeat: no-repeat;
+  filter: contrast(0.8) invert(0.8);
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
 .btn_chapter {
   cursor: pointer;
   padding: 5px;
   font-family: arial;
   width: 60%;
   color: white;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .track_section {
