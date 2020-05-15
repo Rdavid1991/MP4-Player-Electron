@@ -32,7 +32,9 @@
     flex-wrap: wrap;
     flex-direction: row;
     position: fixed;
-    top: 7rem;
+    top: 8rem;
+    padding-top: 2rem;
+    padding-left: 2rem;
 
     &::-webkit-scrollbar {
         width: 7px;

@@ -1,21 +1,28 @@
 "use strict";
 
-const { ipcRenderer } = require("electron");
+const { dialog } = require("electron").remote;
 const { getElement } = require("./htmlElements");
-const { principalFolder, saveHistoryFolder, createFolderView } = require("./directory");
+const { principalFolder, createFolderView, getMainfolder } = require("./directory");
 const { selectTrack, changeViewStatus, trackViewStyle, createTrackView } = require("./track");
-const { getFolderName } = require("./helpers");
+const { getFolderName, getFolderView, setLocalStorage, getLocalStorage } = require("./helpers");
 const { getSubtitle } = require("./subtitle");
+const { gridToList, listToGrid } = require("./views");
 const fs = require("fs");
 const path = require("path");
 
-let saveViews = [];
-let historyFolders = [];
 let backHistory = [];
 let tracks = [];
 
+let saveViews = getLocalStorage("local");
+let historyFolders = getLocalStorage("folder") || [];
+historyFolders.forEach((e) => {
+    principalFolder(e.name);
+});
+
+
 getElement.video_window.disablePictureInPicture = true;
 getElement.video_window.textTracks[0].mode = "showing";
+getElement.listFolder.classList = getFolderView();
 
 function cleanLocalStorage() {
     for (let i = 0; i < saveViews.length; i++) {
@@ -58,7 +65,7 @@ function readFileFolder(dir) {
             }
         }
 
-        getElement.listFolder.classList.replace("folder-grid", "list");
+        getElement.listFolder.classList.replace(getFolderView(), "list");
 
         if (saveViews.length > 0) {
             for (let i = 0; i < getElement.view_check.length; i++) {
@@ -68,26 +75,12 @@ function readFileFolder(dir) {
             }
         }
     } else {
-        getElement.listFolder.classList.replace("list", "folder-grid");
+        getElement.listFolder.classList.replace("list", getFolderView());
         createFolderView(dir, files);
     }
 
     localStorage.setItem("local", JSON.stringify(saveViews));
 }
-
-ipcRenderer.on("dir", (_err, dir) => {
-    if (historyFolders.length > 0) {
-        if (!historyFolders.find((obj) => obj.name === dir)) {
-            historyFolders.push({ "name": dir });
-            saveHistoryFolder(historyFolders);
-            principalFolder(dir);
-        }
-    } else {
-        historyFolders.push({ "name": dir });
-        saveHistoryFolder(historyFolders);
-        principalFolder(dir);
-    }
-});
 
 //when video is finish
 getElement.video_window.onended = () => {
@@ -116,8 +109,8 @@ getElement.video_window.onended = () => {
 };
 
 //Select track or folder
-getElement.listFolder.addEventListener("click", (e) => {
- 
+getElement.listFolder.addEventListener("dblclick", (e) => {
+
     if (e.target.parentNode.getAttribute("name") === "folder-item") {
 
         let routeFolder = e.target.parentNode.getAttribute("route");
@@ -132,27 +125,7 @@ getElement.listFolder.addEventListener("click", (e) => {
         trackViewStyle(tracks);
     } else if (e.target.className === "view_check") {
         saveViews = changeViewStatus(e.target, saveViews);
-        localStorage.setItem("local", JSON.stringify(saveViews));
-    }
-});
-
-getElement.backButton.addEventListener("click", () => {
-    if (backHistory.length > 1) {
-        let route = backHistory.pop();
-        route = route.substring(0, route.lastIndexOf("\\"));
-        readFileFolder(route);
-        getElement.folderTitle.innerHTML = getFolderName(route);
-    } else {
-        getElement.listFolder.classList.replace("list", "folder-grid");
-        getElement.listFolder.innerHTML = "";
-        historyFolders = JSON.parse(localStorage.getItem("folders"));
-
-        historyFolders.forEach((mainDir) => {
-            principalFolder(mainDir.name);
-        });
-        getElement.folderTitle.innerHTML = "Todas las carpetas";
-        backHistory = [];
-
+        setLocalStorage("local",saveViews);
     }
 });
 
@@ -166,58 +139,53 @@ getElement.menuButton.addEventListener("click", () => {
 });
 
 getElement.viewToggle.addEventListener("click", (e) => {
-    let optionView;
-    console.log(e.target.id);
-    
-
     switch (e.target.id) {
         case "grid":
-
-            optionView = [{"viewSelect":"grid"}];
-            localStorage.setItem("optionView",JSON.stringify(optionView));
-            getElement.listFolder.classList.replace("folder-list","folder-grid");
-            
-            getElement.folderItem.forEach(folderElement => {
-                folderElement.classList.replace("folder-items-list","folder-items-grid");
-            });
-
-            getElement.imgFolder.forEach((e)=>{
-                e.classList.replace("img-folder-list","img-folder-grid");
-            });
-
+            listToGrid();
             break;
 
         case "list":
-            
-            optionView = [{"viewSelect":"list"}];
-            localStorage.setItem("optionView",JSON.stringify(optionView));
-            getElement.listFolder.classList.replace("folder-grid","folder-list");
-            
-            getElement.folderItem.forEach(folderElement => {
-                folderElement.classList.replace("folder-items-grid","folder-items-list");
-            });
+            gridToList();
+            break;
 
-            getElement.imgFolder.forEach((e)=>{
-                e.classList.replace("img-folder-grid","img-folder-list");
-            });
+        case "add":
+            dialog.showOpenDialog({ properties: ["openDirectory"] })
+                .then(dirArray => {
 
+                    if (dirArray.filePaths.length > 0) {
+                        let dir = dirArray.filePaths[0];
+
+                        if (historyFolders.length > 0) {
+                            if (!historyFolders.find((obj) => obj.name === dir)) {
+                                historyFolders.push({ "name": dir });
+                                setLocalStorage("folder", historyFolders);
+                                getMainfolder();
+                            }
+                        } else {
+                            historyFolders.push({ "name": dir });
+                            setLocalStorage("folder", historyFolders);
+                            getMainfolder();
+                        }
+                    }
+                });
+            break;
+
+        case "back":
+            if (backHistory.length > 1) {
+                let route = backHistory.pop();
+                route = route.substring(0, route.lastIndexOf("\\"));
+                readFileFolder(route);
+                getElement.folderTitle.innerHTML = getFolderName(route);
+            } else {
+                getMainfolder();
+                backHistory = [];
+            }
             break;
 
         default:
             break;
     }
 });
-
-if (localStorage.getItem("local")) {
-    saveViews = JSON.parse(localStorage.getItem("local"));
-}
-
-if (localStorage.getItem("folders")) {
-    historyFolders = JSON.parse(localStorage.getItem("folders"));
-    historyFolders.forEach((e) => {
-        principalFolder(e.name);
-    });
-}
 
 //shell.openItem("C:\\Users\\david\\Downloads\\Teoria_Charla.pptx")
 

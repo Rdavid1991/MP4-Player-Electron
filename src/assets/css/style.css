@@ -73,7 +73,7 @@
   overflow-x: hidden;
   height: 60vh;
   width: 90%;
-  top: 7rem;
+  top: 10rem;
   position: fixed;
 }
 
@@ -107,7 +107,6 @@
 }
 
 .folder-items-list {
-  margin: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -127,7 +126,9 @@
   height: 73vh;
   width: 90%;
   position: fixed;
-  top: 7rem;
+  top: 8rem;
+  padding-top: 2rem;
+  padding-left: 2rem;
 }
 .folder-list::-webkit-scrollbar {
   width: 7px;
@@ -174,7 +175,9 @@
   flex-wrap: wrap;
   flex-direction: row;
   position: fixed;
-  top: 7rem;
+  top: 8rem;
+  padding-top: 2rem;
+  padding-left: 2rem;
 }
 .folder-grid::-webkit-scrollbar {
   width: 7px;
@@ -208,26 +211,70 @@
 .list-toggle {
   position: absolute;
   top: 6rem;
-  left: 6rem;
+  left: 5rem;
   display: flex;
-  width: 6rem;
+  width: 12rem;
   justify-content: space-between;
 }
 .list-toggle .view-grid {
   background: url(../img/grid.svg);
   background-repeat: no-repeat;
-  filter: contrast(0.8) invert(0.8);
-  width: 2rem;
-  height: 2rem;
+  background-size: 2rem;
+  filter: contrast(0.5) invert(0.2);
+  width: 3rem;
+  height: 3rem;
   cursor: pointer;
+}
+.list-toggle .view-grid:hover {
+  filter: contrast(1) invert(1);
+}
+.list-toggle .view-grid:active {
+  background-size: 2.5rem;
 }
 .list-toggle .view-list {
   background: url(../img/list.svg);
   background-repeat: no-repeat;
-  filter: contrast(0.8) invert(0.8);
-  width: 2rem;
-  height: 2rem;
+  background-size: 2rem;
+  filter: contrast(0.5) invert(0.2);
+  width: 3rem;
+  height: 3rem;
   cursor: pointer;
+}
+.list-toggle .view-list:hover {
+  filter: contrast(1) invert(1);
+}
+.list-toggle .view-list:active {
+  background-size: 2.5rem;
+}
+.list-toggle .view-add {
+  background: url(../img/add.svg);
+  background-repeat: no-repeat;
+  background-size: 2rem;
+  filter: contrast(0.5) invert(0.2);
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+}
+.list-toggle .view-add:hover {
+  filter: contrast(1) invert(1);
+}
+.list-toggle .view-add:active {
+  background-size: 2.5rem;
+}
+.list-toggle .view-back {
+  background: url(../img/back.svg);
+  background-repeat: no-repeat;
+  background-size: 2rem;
+  filter: contrast(0.5) invert(0.2);
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+}
+.list-toggle .view-back:hover {
+  filter: contrast(1) invert(1);
+}
+.list-toggle .view-back:active {
+  background-size: 2.5rem;
 }
 
 .btn_chapter {
@@ -263,24 +310,6 @@ body {
 
 .container {
   height: 100vh;
-}
-
-.back {
-  background: url(../img/back.svg);
-  background-repeat: no-repeat;
-  height: 5rem;
-  width: 4rem;
-  position: absolute;
-  filter: contrast(0.8) invert(0.8);
-  margin-left: 2rem;
-  cursor: pointer;
-  transition: 0.5s;
-}
-.back:hover {
-  filter: contrast(1) invert(1);
-}
-.back:active {
-  background-size: 4.5rem;
 }
 
 /*# sourceMappingURL=style.css.map */

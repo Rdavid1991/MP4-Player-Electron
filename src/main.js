@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, dialog } = require("electron");
+const { app, BrowserWindow, Menu } = require("electron");
 
 let win;
 function createWindow() {
@@ -22,20 +22,6 @@ function createWindow() {
 app.whenReady().then(createWindow);
 
 let template = [
-	{
-		label: "File",
-		submenu: [
-			{
-				label: "Open Folder",
-				click() {
-					let dir = dialog.showOpenDialogSync({properties: ["openDirectory"] });
-					if (dir) {
-						win.webContents.send("dir", dir[0]);
-					}
-				}
-			}
-		]
-	},
 	{
 		label: "DevTools",
 		submenu: [

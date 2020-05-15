@@ -10,20 +10,4 @@ body {
     height: 100vh;
 }
 
-.back {
-    background: url(../img/back.svg);
-    background-repeat: no-repeat;
-    height: 5rem;
-    width: 4rem;
-    position: absolute;
-    filter: contrast(0.8) invert(0.8);
-    margin-left: 2rem;
-    cursor: pointer;
-    transition: 0.5s;
-    &:hover{
-        filter: contrast(1) invert(1);
-    }
-    &:active{
-        background-size: 4.5rem;
-    }  
-}
+

@@ -8,7 +8,6 @@
 }
 
 .folder-items-list {
-    margin: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -29,7 +28,9 @@
     height: 73vh;
     width: 90%;
     position: fixed;
-    top: 7rem;
+    top: 8rem;
+    padding-top: 2rem;
+    padding-left: 2rem;
 
     &::-webkit-scrollbar {
         width: 7px;

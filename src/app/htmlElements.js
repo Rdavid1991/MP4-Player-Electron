@@ -1,9 +1,8 @@
 
-const {getFolderName} = require("./helpers");
+const {getFolderName, getFolderimgView} = require("./helpers");
 
 module.exports = {
     getElement: {
-        reproducer_list: document.getElementsByClassName("reproducer-list")[0],
         trackSection: document.getElementsByClassName("track_section"),
         video_window: document.getElementById("video"),
         video_details: document.getElementById("videoDetails"),
@@ -28,7 +27,7 @@ module.exports = {
     stringElement: {
         //Return name folder to principal folders
         nameFolder: (folder) => {
-            return `<div name="img-folder" class="img-folder-grid"></div><p>${getFolderName(folder)}</>`;
+            return `<div name="img-folder" class="${getFolderimgView()}"></div><p>${getFolderName(folder)}</>`;
         },
 
         trackSectionString: (trackElement) =>{
@@ -36,9 +35,7 @@ module.exports = {
         },
 
         getHTMLFolder:(folderName)=>{
-            return `<div name="img-folder" class="img-folder-grid"></div><p>${folderName}</p>`;
+            return `<div name="img-folder" class="${getFolderimgView()}"></div><p>${folderName}</p>`;
         }
-
-
     },
 };

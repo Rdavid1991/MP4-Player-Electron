@@ -1,5 +1,8 @@
 @import "folder_view_list", "folder_view_grid";
 
+$greyFilter: contrast(0.5) invert(0.2);
+$witheFilter: contrast(1) invert(1);
+
 .menu-tab {
     display: flex;
     justify-content: center;
@@ -15,31 +18,75 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-family: sans-serif;;
+    font-family: sans-serif;
 }
 
-.list-toggle{
+.list-toggle {
     position: absolute;
     top: 6rem;
-    left: 6rem;
+    left: 5rem;
     display: flex;
-    width: 6rem;
+    width: 12rem;
     justify-content: space-between;
-    .view-grid{
+    .view-grid {
         background: url(../img/grid.svg);
         background-repeat: no-repeat;
-        filter: contrast(0.8) invert(0.8);
-        width: 2rem;
-        height: 2rem;
+        background-size: 2rem;
+        filter: $greyFilter;
+        width: 3rem;
+        height: 3rem;
         cursor: pointer;
+        &:hover {
+            filter: $witheFilter;
+        }
+        &:active {
+            background-size: 2.5rem;
+        }
     }
-    .view-list{
+    .view-list {
         background: url(../img/list.svg);
         background-repeat: no-repeat;
-        filter: contrast(0.8) invert(0.8);
-        width: 2rem;
-        height: 2rem;
+        background-size: 2rem;
+        filter: $greyFilter;
+        width: 3rem;
+        height: 3rem;
         cursor: pointer;
+        &:hover {
+            filter: $witheFilter;
+        }
+        &:active {
+            background-size: 2.5rem;
+        }
+    }
+    .view-add {
+        background: url(../img/add.svg);
+        background-repeat: no-repeat;
+        background-size: 2rem;
+        filter: $greyFilter;
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        &:hover {
+            filter: $witheFilter;
+        }
+        &:active {
+            background-size: 2.5rem;
+        }
+    }
+    .view-back {
+        background: url(../img/back.svg);
+        background-repeat: no-repeat;
+        background-size: 2rem;
+        filter: $greyFilter;
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        &:hover {
+            filter: $witheFilter;
+        }
+        &:active {
+            background-size: 2.5rem;
+        }
     }
 }
 
@@ -62,10 +109,9 @@
     justify-content: center;
     border-radius: 50px;
     border-style: outset;
-    border-color: rgb(255, 127, 80,0.7);
+    border-color: rgb(255, 127, 80, 0.7);
 
-    &:hover{
+    &:hover {
         background-color: gray;
     }
 }
-
